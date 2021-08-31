@@ -1,5 +1,5 @@
 # ISW2021-Grupo9
-Repositorio de soporte al cursado de ISW 2021
+Repositorio de soporte del producto correspondiente al cursado de ISW 2021
 
 Integrantes: 
 Battig Chavez Joaquin Antonio, 76056
