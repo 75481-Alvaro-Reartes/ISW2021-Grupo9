@@ -15,4 +15,4 @@ de la carrera de Ingeniería en Sistemas dictada por la Universidad Tecnológica
 
 La finalidad de este repositorio es el acercamiento con la herramienta Github para realizar commits, pulls, request. Realizar
 el diseño e implementar la estructura del repositorio para resguardar el trabajo generado durante el cursado de la materia.
-Es decir, aplicar los conceptos de gestión de configuración estudiados en una herramienta de software específica. 
+Es decir, aplicar los conceptos de gestión de configuración estudiados en esta herramienta de software específica. 
