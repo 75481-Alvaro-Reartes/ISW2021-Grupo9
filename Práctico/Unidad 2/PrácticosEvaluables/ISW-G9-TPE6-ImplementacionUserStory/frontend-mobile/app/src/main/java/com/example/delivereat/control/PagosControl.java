@@ -1,56 +1,53 @@
 package com.example.delivereat.control;
 
-import com.example.delivereat.model.MetodoPago;
-import com.example.delivereat.model.PagoTarjeta;
+import com.example.delivereat.model.Pago;
 import com.example.delivereat.model.Pedido;
-import com.example.delivereat.service.ClientePagoVisa;
-import com.example.delivereat.service.MockPagos;
-import com.example.delivereat.ui.PagosActivity;
+import com.example.delivereat.persistencia.Datos;
+import com.example.delivereat.ui.activities.loquesea.PagosActivity;
 
-public class PagosControl {
+public class PagosControl implements IControl {
 
     private final PagosActivity activity;
-    private ClientePagoVisa pagoVisa;
+    private final Pedido pedido;
 
     public PagosControl(PagosActivity activity) {
         this.activity = activity;
-        pagoVisa = new MockPagos().setObserver(this);
+        pedido = Datos.getInstance().getPedido();
     }
 
     public void siguiente() {
-        Pedido p = Pedido.getInstance();
+        guardarDatos();
 
-        MetodoPago metodoPago = activity.getMetodoPago();
-        String titular = activity.getTitular();
-        long tarjeta = activity.getTarjeta();
-        int cvc = activity.getCVC();
-        int mes = activity.getMes();
-        int year = activity.getYear();
-        double monto = activity.getMonto();
+        activity.setErrores(pedido.getPago().getErrores());
 
-        p.setMetodoPago(metodoPago);
-        p.setTitular(titular);
-        p.setTarjeta(tarjeta);
-        p.setCvc(cvc);
-        p.setMesVto(mes);
-        p.setYearVto(year);
-        p.setMonto(monto);
-
-        activity.setErrores(p.errores);
-
-        if (!p.errores.errorFormPagos()) {
-            if (metodoPago == MetodoPago.Tarjeta) {
-                activity.esperar(true);
-                pagoVisa.validar(new PagoTarjeta(titular, tarjeta, cvc, mes, year));
-            }
-            else
-                activity.siguiente();
+        if (!pedido.getPago().getErrores().hayError()) {
+            activity.siguiente();
         }
     }
 
-    public void tarjetaValida(boolean valida) {
-        activity.esperar(false);
-        if (valida) activity.siguiente();
-        else activity.toast("No se pudo verificar la tarjeta.");
+    @Override
+    public void recuperarDatos() {
+        Pago pago = pedido.getPago();
+
+        activity.setTitular(pago.getTitular());
+        activity.setTarjeta(pago.getTarjeta());
+        activity.setCVC(pago.getCvc());
+        activity.setMes(pago.getMesVto());
+        activity.setYear(pago.getYearVto());
+        activity.setMonto(pago.getMonto());
+        activity.setMetodoPago(pago.getMetodoPago());
+    }
+
+    @Override
+    public void guardarDatos() {
+        Pago pago = pedido.getPago();
+
+        pago.setTitular(activity.getTitular());
+        pago.setTarjeta(activity.getTarjeta());
+        pago.setCvc(activity.getCVC());
+        pago.setMesVto(activity.getMes());
+        pago.setYearVto(activity.getYear());
+        pago.setMonto(activity.getMonto());
+        pago.setMetodoPago(activity.getMetodoPago());
     }
 }

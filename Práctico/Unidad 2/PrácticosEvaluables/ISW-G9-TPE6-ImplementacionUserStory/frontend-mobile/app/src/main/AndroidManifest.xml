@@ -17,13 +17,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DeliverEat">
         <activity
-            android:name=".ui.CompletadoActivity"
+            android:name=".ui.activities.loquesea.EntregaActivity"
+            android:exported="true"
+            android:theme="@style/Theme.DeliverEat.NoActionBar"/>
+        <activity
+            android:name=".ui.activities.loquesea.ConfirmarActivity"
             android:exported="true"
             android:label="Pedir lo Que Sea!"/>
         <activity
-            android:name=".ui.PagosActivity"
+            android:name=".ui.activities.loquesea.CompletadoActivity"
             android:exported="true"
-            android:label="Pedir lo Que Sea!"/>
+            android:theme="@style/Theme.DeliverEat.NoActionBar"
+            />
+        <activity
+            android:name=".ui.activities.loquesea.PagosActivity"
+            android:exported="true"
+            android:theme="@style/Theme.DeliverEat.NoActionBar"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,19 +46,19 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.MapsActivity"
+            android:name=".ui.activities.otros.MapsActivity"
             android:exported="true"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".ui.UbicacionActivity"
+            android:name=".ui.activities.loquesea.UbicacionActivity"
             android:exported="true"
             android:theme="@style/Theme.DeliverEat.NoActionBar" />
         <activity
-            android:name=".ui.ProductosActivity"
+            android:name=".ui.activities.loquesea.ProductosActivity"
             android:exported="true"
             android:theme="@style/Theme.DeliverEat.NoActionBar" />
         <activity
-            android:name=".ui.MenuActivity"
+            android:name=".ui.activities.otros.MenuActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

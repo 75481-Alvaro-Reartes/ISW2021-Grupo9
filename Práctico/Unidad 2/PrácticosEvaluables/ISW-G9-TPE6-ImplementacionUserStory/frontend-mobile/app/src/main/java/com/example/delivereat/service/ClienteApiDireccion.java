@@ -42,6 +42,7 @@ public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
                     resultado.append(linea);
                 }
             }
+            assert inputStream != null;
             inputStream.close();
 
         } catch (Exception e){
@@ -55,28 +56,33 @@ public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
     @Override
     protected void onPostExecute(String body) {
         if (body == null || body.isEmpty()) {
-            mostrarError();
+            control.recibirResultadoDireccion(null);
             return;
         }
 
         try {
+
+            System.out.println(body);
             JSONObject json = new JSONObject(body);
 
             JSONArray resultado = json.getJSONArray("results").getJSONObject(0).getJSONArray("address_components");
 
-            direccion.setNumero(resultado.getJSONObject(0).getString("long_name"));
+            direccion.setNumero(Integer.parseInt(resultado.getJSONObject(0).getString("long_name")));
             direccion.setCalle(resultado.getJSONObject(1).getString("long_name"));
-            direccion.setCiudad(resultado.getJSONObject(2).getString("long_name"));
+            String ciudad = resultado.getJSONObject(2).getString("long_name");
+            if (ciudad.length() == 3)
+                ciudad = resultado.getJSONObject(3).getString("long_name");
+            direccion.setCiudad(ciudad);
 
-            control.setDireccion(direccion);
+
+            // Maps le llama indistintamente Córdoba o Capital, lo dejo siempre en Córdoba
+            if (direccion.getCiudad().equals("Capital")) direccion.setCiudad("Córdoba");
+
+            control.recibirResultadoDireccion(direccion);
 
         } catch (Exception e) {
             e.printStackTrace();
-            mostrarError();
+            control.recibirResultadoDireccion(null);
         }
-    }
-
-    private void mostrarError() {
-        control.mostrarError("Ocurrió un error al cargar la dirección.");
     }
 }

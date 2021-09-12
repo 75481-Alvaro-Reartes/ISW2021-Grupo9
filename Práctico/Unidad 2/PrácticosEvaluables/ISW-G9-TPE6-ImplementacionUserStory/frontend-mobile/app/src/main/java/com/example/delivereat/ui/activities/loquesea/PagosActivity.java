@@ -1,49 +1,48 @@
-package com.example.delivereat.ui;
+package com.example.delivereat.ui.activities.loquesea;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
 import com.example.delivereat.R;
+import com.example.delivereat.control.IControl;
 import com.example.delivereat.control.PagosControl;
 import com.example.delivereat.model.MetodoPago;
-import com.example.delivereat.model.Pedido;
+import com.example.delivereat.model.Pago;
+import com.example.delivereat.ui.abstracts.BaseActivity;
+import com.example.delivereat.ui.abstracts.ObservadorLimpiador;
+import com.example.delivereat.ui.abstracts.ObservadorTexto;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
-import java.util.Objects;
 
-public class PagosActivity extends AppCompatActivity implements View.OnClickListener {
+public class PagosActivity extends BaseActivity implements View.OnClickListener {
 
+    private MaterialButton btnTarjeta, btnEfectivo;
     private View cardTarjeta, cardEfectivo;
     private MaterialButtonToggleGroup btnGroup;
-    private MaterialButton btnTarjeta, btnEfectivo;
     private AutoCompleteTextView txtMes, txtYear;
     private TextInputEditText txtTitular, txtTarjeta, txtCVC, txtMonto;
     private TextInputLayout layTitular, layTarjeta, layCVC, layMes, layYear, layMonto;
-    private LinearProgressIndicator progress;
 
     private PagosControl control;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pagos);
+    protected IControl getControl() {
+        control = new PagosControl(this);
+        return control;
+    }
 
-        progress = findViewById(R.id.progressPago);
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_pagos;
+    }
 
+    @Override
+    protected void iniciarViews() {
         btnTarjeta = findViewById(R.id.btnTarjeta);
         btnEfectivo = findViewById(R.id.btnEfectivo);
 
@@ -69,19 +68,14 @@ public class PagosActivity extends AppCompatActivity implements View.OnClickList
         txtMonto = findViewById(R.id.txtMonto);
         layMonto = findViewById(R.id.txtLayMonto);
 
-        txtTarjeta.addTextChangedListener(new TextWatcher() {
+        txtTarjeta.addTextChangedListener(new ObservadorTexto() {
             boolean mostrandoVisa = false;
             boolean mostrandoError = false;
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() != 0) {
-                    if (s.charAt(0) == '4'){
+            protected void textoModificado(String nuevoTexto) {
+                if (nuevoTexto.length() != 0) {
+                    if (nuevoTexto.charAt(0) == '4'){
                         if (!mostrandoVisa) {
                             txtTarjeta.setCompoundDrawablesWithIntrinsicBounds(
                                     0,
@@ -118,11 +112,6 @@ public class PagosActivity extends AppCompatActivity implements View.OnClickList
                     mostrandoError = false;
                 }
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
         });
 
 
@@ -131,16 +120,42 @@ public class PagosActivity extends AppCompatActivity implements View.OnClickList
         btnTarjeta.setOnClickListener(this);
         btnEfectivo.setOnClickListener(this);
 
-        findViewById(R.id.btnConfirmar).setOnClickListener(x -> control.siguiente());
+        findViewById(R.id.txtSiguiente).setOnClickListener(x -> control.siguiente());
 
-        control = new PagosControl(this);
+        txtTitular.addTextChangedListener(new ObservadorLimpiador() {
+            @Override
+            public TextInputLayout setEditTextLayout() {
+                return layTitular;
+            }
+        });
+        txtCVC.addTextChangedListener(new ObservadorLimpiador() {
+            @Override
+            public TextInputLayout setEditTextLayout() {
+                return layCVC;
+            }
+        });
+        txtMes.addTextChangedListener(new ObservadorLimpiador() {
+            @Override
+            public TextInputLayout setEditTextLayout() {
+                return layMes;
+            }
+        });
+        txtYear.addTextChangedListener(new ObservadorLimpiador() {
+            @Override
+            public TextInputLayout setEditTextLayout() {
+                return layYear;
+            }
+        });
+        txtMonto.addTextChangedListener(new ObservadorLimpiador() {
+            @Override
+            public TextInputLayout setEditTextLayout() {
+                return layMonto;
+            }
+        });
     }
 
     public void siguiente() {
-        Intent intent = new Intent(PagosActivity.this, CompletadoActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+        navegar(ConfirmarActivity.class);
     }
 
     private void iniciarAutocompletado() {
@@ -173,82 +188,64 @@ public class PagosActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
 
+        mostrarMetodoPago();
+    }
+
+    private void mostrarMetodoPago() {
         boolean esTarjeta = btnGroup.getCheckedButtonId() == R.id.btnTarjeta;
 
         cardTarjeta.setVisibility(esTarjeta ? View.VISIBLE : View.GONE);
         cardEfectivo.setVisibility(!esTarjeta ? View.VISIBLE : View.GONE);
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.from_left, R.anim.to_right);
-    }
-
     public String getTitular() {
-        return Objects.requireNonNull(txtTitular.getText()).toString();
+        return getTxtString(R.id.txtTitular);
     }
 
     public long getTarjeta() {
-        String txt = Objects.requireNonNull(txtTarjeta.getText()).toString();
-
-        return txt.length() == 0
-                ? -1
-                : Long.parseLong(txt);
+        return getTxtLong(R.id.txtTarjeta);
     }
 
     public int getCVC() {
-        String txt = Objects.requireNonNull(txtCVC.getText()).toString();
-
-        return txt.length() == 0
-                ? -1
-                : Integer.parseInt(txt);
+        return getTxtInt(R.id.txtCVC);
     }
 
     public int getMes() {
-        String txt = Objects.requireNonNull(txtMes.getText()).toString();
-
-        return txt.length() == 0
-                ? -1
-                : Integer.parseInt(txt);
+        return getTxtInt(R.id.txtMesVto, -1);
     }
 
     public int getYear() {
-        String txt = Objects.requireNonNull(txtYear.getText()).toString();
-
-        return txt.length() == 0
-                ? -1
-                : Integer.parseInt(txt);
+        return getTxtInt(R.id.txtYearVto);
     }
 
-    public void setErrores(Pedido.Errores errores) {
-        if (errores.tarjetaLargo)
+    public void setErrores(Pago.Errores errores) {
+        if (errores.eLargoTarjeta())
             layTarjeta.setError("La longitud de la tarjeta es inválida (16 dígitos).");
 
-        if (errores.tarjetaNoVisa)
+        if (errores.eTarjetaNoVisa())
             layTarjeta.setError("Solo se admiten tarjetas VISA.");
 
-        layTitular.setError(errores.titular
-                ? "Ingresá el numbre del titular."
+        layTitular.setError(errores.eTitular()
+                ? "Ingresá el numbre del titular. (min 5 carac)"
                 : "");
 
-        layCVC.setError(errores.cvc
-                ? "Ingresá el CVC."
+        layCVC.setError(errores.eCVC()
+                ? "Ingresá un CVC válido."
                 : "");
 
-        layMes.setError(errores.mesVto
+        layMes.setError(errores.eMes()
                 ? "Ingresá el mes de vencimiento."
                 : "");
 
-        layYear.setError(errores.yearVto
+        layYear.setError(errores.eYear()
                 ? "Ingresá el año de vencimiento."
                 : "");
 
-        if (errores.tarjetaVencida)
+        if (errores.eTarjetaVencida())
             layMes.setError("La tarjeta está vencida.");
 
-        layMonto.setError(errores.monto
-                ? "Ingresá el monto con el que abonarás."
+        layMonto.setError(errores.eMonto()
+                ? "Monto mínimo de $100."
                 : "");
     }
 
@@ -259,28 +256,52 @@ public class PagosActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public double getMonto() {
-        String txt = Objects.requireNonNull(txtMonto.getText()).toString();
-
-        return txt.length() == 0
-                ? -1d
-                : Double.parseDouble(txt);
+        return getTxtDouble(R.id.txtMonto);
     }
 
-    public void esperar(boolean esperar) {
-        progress.setVisibility(esperar
-                ? View.VISIBLE
-                : View.GONE);
-
-        layTitular.setEnabled(!esperar);
-        layTarjeta.setEnabled(!esperar);
-        layCVC.setEnabled(!esperar);
-        layMes.setEnabled(!esperar);
-        layYear.setEnabled(!esperar);
-        btnEfectivo.setEnabled(!esperar);
-        btnTarjeta.setEnabled(!esperar);
+    public void setTitular(String titular) {
+        setTxtString(R.id.txtTitular, titular);
     }
 
-    public void toast(String mensaje) {
-        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
+    public void setTarjeta(long tarjeta) {
+        setTxtString(R.id.txtTarjeta, tarjeta == 0
+                ? ""
+                : String.valueOf(tarjeta));
+    }
+
+    public void setCVC(int cvc) {
+        setTxtString(R.id.txtCVC, cvc == 0
+                ? ""
+                : String.valueOf(cvc));
+    }
+
+    public void setMes(int mes) {
+        String mesStr;
+        if (mes == -1) {
+            mesStr = "";
+        }
+        else{
+            mesStr = String.valueOf(mes);
+            if (mesStr.length() == 1) mesStr = "0" + mesStr;
+        }
+        txtMes.setText(mesStr, false);
+    }
+
+    public void setYear(int year) {
+        if (year == 0) return;
+        txtYear.setText(String.valueOf(year), false);
+    }
+
+    public void setMonto(double monto) {
+        setTxtString(R.id.txtMonto, monto == 0
+                ? ""
+                : String.valueOf(monto));
+    }
+
+    public void setMetodoPago(MetodoPago metodoPago) {
+        btnTarjeta.setChecked(metodoPago == MetodoPago.Tarjeta);
+        btnEfectivo.setChecked(metodoPago == MetodoPago.Efectivo);
+
+        mostrarMetodoPago();
     }
 }

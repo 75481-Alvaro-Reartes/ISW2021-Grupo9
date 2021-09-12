@@ -1,4 +1,4 @@
-package com.example.delivereat.ui;
+package com.example.delivereat.ui.activities.loquesea;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.delivereat.R;
+import com.example.delivereat.ui.activities.otros.MenuActivity;
 
 public class CompletadoActivity extends AppCompatActivity {
 

@@ -1,27 +1,35 @@
 package com.example.delivereat.control;
 
 import com.example.delivereat.model.Pedido;
-import com.example.delivereat.ui.ProductosActivity;
+import com.example.delivereat.persistencia.Datos;
+import com.example.delivereat.ui.activities.loquesea.ProductosActivity;
 
-public class ProductosControl {
+public class ProductosControl implements IControl{
 
-    private ProductosActivity activity;
+    private final ProductosActivity activity;
+    private final Pedido pedido;
 
     public ProductosControl(ProductosActivity activity) {
         this.activity = activity;
+        pedido = Datos.getInstance().getPedido();
     }
 
     public void clickSiguiente() {
+        guardarDatos();
         
-        Pedido pedido = Pedido.getInstance();
-        
-        pedido.setProducto(activity.getProducto());
-        pedido.setImagenes(activity.getImagenes());
-        pedido.setRecibirPronto(activity.getRecibirPronto());
-        pedido.setFechaHoraRecepcion(activity.getFechaHoraRecepcion());
-        
-        activity.setErrores(pedido.errores);
+        activity.setErrores(pedido.getProducto().getErrores());
 
-        if (!pedido.errores.errorFormProducto()) activity.siguiente();
+        if (!pedido.getProducto().getErrores().hayError()) activity.siguiente();
+    }
+
+    @Override
+    public void recuperarDatos() {
+        activity.setProducto(pedido.getProducto().getNombre());
+        activity.setImagenes(pedido.getProducto().getImagenes());
+    }
+
+    public void guardarDatos() {
+        pedido.getProducto().setNombre(activity.getProducto());
+        pedido.getProducto().setImagenes(activity.getImagenes());
     }
 }

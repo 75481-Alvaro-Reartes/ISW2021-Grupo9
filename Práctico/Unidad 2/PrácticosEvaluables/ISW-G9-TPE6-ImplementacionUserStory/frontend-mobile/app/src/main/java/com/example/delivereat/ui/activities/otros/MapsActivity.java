@@ -1,11 +1,13 @@
-package com.example.delivereat.ui;
+package com.example.delivereat.ui.activities.otros;
 
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
 
 import com.example.delivereat.R;
+import com.example.delivereat.model.Direccion;
 import com.example.delivereat.model.Pedido;
+import com.example.delivereat.persistencia.Datos;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,9 +34,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         botonAceptar = findViewById(R.id.btnAceptarUbicacion);
         botonAceptar.setOnClickListener(x -> {
-            Pedido p = Pedido.getInstance();
-            p.setLat(posicion.latitude);
-            p.setLng(posicion.longitude);
+            Direccion d = Datos.getInstance().getPedido().getUbicacion().getTemp();
+            d.setLat(posicion.latitude);
+            d.setLng(posicion.longitude);
             setResult(RESULT_OK);
             finish();
         });

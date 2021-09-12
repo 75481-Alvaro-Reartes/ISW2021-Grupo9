@@ -1,6 +1,5 @@
 package com.example.delivereat.ui.adapters;
 
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.delivereat.R;
-import com.example.delivereat.control.ProductosControl;
-import com.example.delivereat.ui.ProductosActivity;
+import com.example.delivereat.model.Imagen;
+import com.example.delivereat.ui.activities.loquesea.ProductosActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +24,12 @@ public class ImagenesAdapter extends RecyclerView.Adapter<ImagenesAdapter.ViewHo
         this.activity = activity;
     }
 
-    public void addImagen(Uri uri) {
-        imagenes.add(uri);
+    public void addImagen(Imagen imagen) {
+        imagenes.add(imagen);
         notifyDataSetChanged();
     }
 
-    private List<Uri> imagenes;
+    private List<Imagen> imagenes;
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,7 +41,7 @@ public class ImagenesAdapter extends RecyclerView.Adapter<ImagenesAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getImagen().setImageURI(imagenes.get(position));
+        holder.getImagen().setImageBitmap(imagenes.get(position).getBm());
     }
 
     @Override
@@ -51,14 +50,18 @@ public class ImagenesAdapter extends RecyclerView.Adapter<ImagenesAdapter.ViewHo
     }
 
     public void quitarImagen(int pos) {
-        Uri borrada = imagenes.get(pos);
+        Imagen borrada = imagenes.get(pos);
         imagenes.remove(pos);
         notifyDataSetChanged();
         activity.imagenEliminada(borrada);
     }
 
-    public List<Uri> getImagenes() {
+    public List<Imagen> getImagenes() {
         return imagenes;
+//        List<String> lista = new ArrayList<>();
+//        for (Uri uri: imagenes)
+//            lista.add(uri.toString());
+//        return lista;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
