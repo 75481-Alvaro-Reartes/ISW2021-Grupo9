@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -12,8 +11,8 @@ import android.widget.AutoCompleteTextView;
 import com.example.delivereat.R;
 import com.example.delivereat.control.IControl;
 import com.example.delivereat.control.UbicacionControl;
-import com.example.delivereat.model.Direccion;
-import com.example.delivereat.model.Ubicacion;
+import com.example.delivereat.model.pedidos.Direccion;
+import com.example.delivereat.model.pedidos.Ubicacion;
 import com.example.delivereat.ui.abstracts.ObservadorLimpiador;
 import com.example.delivereat.ui.activities.otros.MapsActivity;
 import com.example.delivereat.ui.abstracts.BaseActivity;

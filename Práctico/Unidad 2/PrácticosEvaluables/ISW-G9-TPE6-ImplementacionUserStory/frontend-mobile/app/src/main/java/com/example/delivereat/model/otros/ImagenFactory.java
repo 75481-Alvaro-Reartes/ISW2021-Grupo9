@@ -1,4 +1,4 @@
-package com.example.delivereat.model;
+package com.example.delivereat.model.otros;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;

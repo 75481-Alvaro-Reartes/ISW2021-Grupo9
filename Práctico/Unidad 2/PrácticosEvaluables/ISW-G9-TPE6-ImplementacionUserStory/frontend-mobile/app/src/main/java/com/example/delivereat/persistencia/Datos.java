@@ -1,6 +1,6 @@
 package com.example.delivereat.persistencia;
 
-import com.example.delivereat.model.Pedido;
+import com.example.delivereat.model.pedidos.Pedido;
 
 /**
  * Por el momento esta clase no provee realmente

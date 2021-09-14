@@ -17,22 +17,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DeliverEat">
         <activity
+            android:name=".ui.activities.decomercio.ProximamenteActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.activities.loquesea.EntregaActivity"
             android:exported="true"
-            android:theme="@style/Theme.DeliverEat.NoActionBar"/>
+            android:theme="@style/Theme.DeliverEat.NoActionBar" />
         <activity
             android:name=".ui.activities.loquesea.ConfirmarActivity"
             android:exported="true"
-            android:label="Pedir lo Que Sea!"/>
+            android:label="Pedir lo Que Sea!" />
         <activity
             android:name=".ui.activities.loquesea.CompletadoActivity"
             android:exported="true"
-            android:theme="@style/Theme.DeliverEat.NoActionBar"
-            />
+            android:theme="@style/Theme.DeliverEat.NoActionBar" />
         <activity
             android:name=".ui.activities.loquesea.PagosActivity"
             android:exported="true"
-            android:theme="@style/Theme.DeliverEat.NoActionBar"/>
+            android:theme="@style/Theme.DeliverEat.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

@@ -1,4 +1,4 @@
-package com.example.delivereat.model;
+package com.example.delivereat.model.pedidos;
 
 public enum MetodoPago {
     Tarjeta,

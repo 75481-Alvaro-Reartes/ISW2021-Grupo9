@@ -3,46 +3,41 @@ package com.example.delivereat.ui.activities.loquesea;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
-import android.provider.OpenableColumns;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.delivereat.R;
 import com.example.delivereat.control.IControl;
 import com.example.delivereat.control.ProductosControl;
-import com.example.delivereat.model.Imagen;
-import com.example.delivereat.model.ImagenFactory;
-import com.example.delivereat.model.Pedido;
-import com.example.delivereat.model.Producto;
+import com.example.delivereat.model.otros.Imagen;
+import com.example.delivereat.model.otros.ImagenFactory;
+import com.example.delivereat.model.pedidos.Producto;
 import com.example.delivereat.ui.abstracts.BaseActivity;
 import com.example.delivereat.ui.abstracts.ObservadorLimpiador;
-import com.example.delivereat.ui.abstracts.ObservadorTexto;
-import com.example.delivereat.ui.adapters.ImagenesAdapter;
+import com.example.delivereat.util.Constantes;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.List;
 
 
 public class ProductosActivity extends BaseActivity {
 
     private TextInputLayout layProducto;
-    private RecyclerView listaImagenes;
-    private ImagenesAdapter adapter;
-    private long filesKB;
+    private double filesKB;
     private TextView lblPesoImg;
+    private Imagen imagen;
+    private ImageView imgProducto;
+    private ConstraintLayout layoutImagen;
 
     private ProductosControl control;
+
+    ActivityResultLauncher<String> mGetContent;
 
     @Override
     protected int getLayoutId() {
@@ -57,14 +52,16 @@ public class ProductosActivity extends BaseActivity {
 
     @Override
     protected void iniciarViews() {
-        listaImagenes = findViewById(R.id.listaImagenes);
+        imgProducto = findViewById(R.id.imgProducto);
         lblPesoImg = findViewById(R.id.lblPesoImg);
         layProducto = findViewById(R.id.txtLayProducto);
         TextInputEditText txtProducto = findViewById(R.id.txtProducto);
+        layoutImagen = findViewById(R.id.layoutImgProducto);
+
+        mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                this::mostrarImagen);
 
         findViewById(R.id.txtSiguiente).setOnClickListener(x -> control.clickSiguiente());
-
-        iniciarRecycler();
 
         txtProducto.addTextChangedListener(new ObservadorLimpiador() {
             @Override
@@ -74,47 +71,61 @@ public class ProductosActivity extends BaseActivity {
         });
 
         findViewById(R.id.btnCargarImg).setOnClickListener(x -> abrirSelectorImagen());
+        findViewById(R.id.btnBorrarImg).setOnClickListener(x -> borrarImagen());
     }
 
-    private void iniciarRecycler() {
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+    private void borrarImagen() {
+        imgProducto.setImageBitmap(null);
+        imagen = null;
+        lblPesoImg.setText("0KB");
+        layoutImagen.setVisibility(View.GONE);
+    }
 
-        adapter = new ImagenesAdapter(this);
-        listaImagenes.setLayoutManager(layoutManager);
-        listaImagenes.setAdapter(adapter);
+    public void mostrarImagen(Uri uri) {
+        imagen = ImagenFactory.fabricar(uri, getContentResolver());
+
+        mostrarImagen(imagen);
+    }
+
+    public void mostrarImagen(Imagen imagen) {
+        if (imagen == null) return;
+
+        if (imagen.getSize() > Constantes.MAYOR_PESO_IMAGEN_KB) {
+            toast("La imágen no puede exceder los 5MB.");
+            return;
+        }
+
+        imgProducto.setImageBitmap(imagen.getBm());
+        lblPesoImg.setText(imagen.getFormatedSize());
+        layoutImagen.setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("IntentReset")
     private void abrirSelectorImagen() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-
-        @SuppressLint("IntentReset")
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType("image/*");
-        pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-
-        Intent chooserIntent = Intent.createChooser(intent, "Dónde buscar la imagen?");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
-
-        startActivityForResult(chooserIntent, 777);
+        mGetContent.launch("image/*");
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setType("image/*");
+//
+//        @SuppressLint("IntentReset")
+//        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        pickIntent.setType("image/*");
+//        pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//
+//        Intent chooserIntent = Intent.createChooser(intent, "Dónde buscar la imagen?");
+//        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+//
+//        startActivityForResult(chooserIntent, 777);
     }
 
-    private double round(double num) {
-        return Math.round(num * 100d) / 100d;
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 777 && resultCode == RESULT_OK && null != data) {
-                extraerPathImagenes(data);
-                mostrarPesoImagenes();
-            }
-
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 777 && resultCode == RESULT_OK && null != data) {
+//                extraerPathImagenes(data);
+//                mostrarPesoImagenes();
+//            }
+//
+//    }
 
     private void extraerPathImagenes(Intent data) {
         try{
@@ -138,8 +149,8 @@ public class ProductosActivity extends BaseActivity {
                         imagenesOmitidas++;
                         continue;
                     }
-                    filesKB += imagen.getSize();
-                    adapter.addImagen(imagen);
+                    filesKB = imagen.getSize();
+                    //adapter.addImagen(imagen);
                 }
             }
 
@@ -151,48 +162,48 @@ public class ProductosActivity extends BaseActivity {
                         .show();
             }
 
-            hayImagenes();
+            //hayImagenes();
         }
         catch(Exception ex) {
             Toast.makeText(this, "Lo sentimos, ocurrió un error :(", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void hayImagenes() {
-        listaImagenes.setVisibility(adapter.getItemCount() == 0
-                ? View.GONE
-                : View.VISIBLE);
-    }
+//    private void hayImagenes() {
+//        listaImagenes.setVisibility(adapter.getItemCount() == 0
+//                ? View.GONE
+//                : View.VISIBLE);
+//    }
 
-    public void imagenEliminada(Imagen imagen) {
-        filesKB -= imagen.getSize();
-        if (filesKB < 0) filesKB = 0;
-        mostrarPesoImagenes();
-        hayImagenes();
-    }
+//    public void imagenEliminada(Imagen imagen) {
+//        filesKB -= imagen.getSize();
+//        if (filesKB < 0) filesKB = 0;
+//        mostrarPesoImagenes();
+//        hayImagenes();
+//    }
 
-    private void mostrarPesoImagenes() {
-        String stringSize;
-
-        if (filesKB >= 1000) {
-            stringSize = round(filesKB / 1000d) + " MB";
-        }
-        else if (filesKB == 0) {
-            stringSize = "0 KB";
-        }
-        else {
-            stringSize = round(filesKB) + " KB";
-        }
-        lblPesoImg.setText(stringSize);
-    }
+//    private void mostrarPesoImagenes() {
+//        String stringSize;
+//
+//        if (filesKB >= 1000) {
+//            stringSize = round(filesKB / 1000d) + " MB";
+//        }
+//        else if (filesKB == 0) {
+//            stringSize = "0 KB";
+//        }
+//        else {
+//            stringSize = round(filesKB) + " KB";
+//        }
+//        lblPesoImg.setText(stringSize);
+//    }
 
     public String getProducto() {
         return getTxtString(R.id.txtProducto);
     }
 
-    public List<Imagen> getImagenes() {
-        return adapter.getImagenes();
-    }
+    //public List<Imagen> getImagenes() {
+    //    return adapter.getImagenes();
+    //}
 
     public void setErrores(Producto.Errores errores) {
         layProducto.setError(errores.eRequerido() ? "Ingresá un producto (5 a 280 caracteres)." : "");
@@ -206,15 +217,19 @@ public class ProductosActivity extends BaseActivity {
         setTxtString(R.id.txtProducto, producto);
     }
 
-    public void setImagenes(List<Imagen> imagenes) {
-        if (imagenes == null) return;
-        filesKB = 0;
-        iniciarRecycler();
-        for (Imagen img: imagenes) {
-            adapter.addImagen(img);
-            filesKB += img.getSize();
-        }
-        mostrarPesoImagenes();
-        hayImagenes();
+    public Imagen getImagen() {
+        return imagen;
     }
+
+//    public void setImagenes(List<Imagen> imagenes) {
+//        if (imagenes == null) return;
+//        filesKB = 0;
+//        iniciarRecycler();
+//        for (Imagen img: imagenes) {
+//            adapter.addImagen(img);
+//            filesKB += img.getSize();
+//        }
+//        mostrarPesoImagenes();
+//        hayImagenes();
+//    }
 }

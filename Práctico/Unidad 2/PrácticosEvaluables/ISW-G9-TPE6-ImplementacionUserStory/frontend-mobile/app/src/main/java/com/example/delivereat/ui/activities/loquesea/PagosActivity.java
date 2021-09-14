@@ -3,12 +3,13 @@ package com.example.delivereat.ui.activities.loquesea;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import com.example.delivereat.R;
 import com.example.delivereat.control.IControl;
 import com.example.delivereat.control.PagosControl;
-import com.example.delivereat.model.MetodoPago;
-import com.example.delivereat.model.Pago;
+import com.example.delivereat.model.pedidos.MetodoPago;
+import com.example.delivereat.model.pedidos.Pago;
 import com.example.delivereat.ui.abstracts.BaseActivity;
 import com.example.delivereat.ui.abstracts.ObservadorLimpiador;
 import com.example.delivereat.ui.abstracts.ObservadorTexto;
@@ -27,6 +28,7 @@ public class PagosActivity extends BaseActivity implements View.OnClickListener 
     private AutoCompleteTextView txtMes, txtYear;
     private TextInputEditText txtTitular, txtTarjeta, txtCVC, txtMonto;
     private TextInputLayout layTitular, layTarjeta, layCVC, layMes, layYear, layMonto;
+    private TextView lblMonto;
 
     private PagosControl control;
 
@@ -67,6 +69,9 @@ public class PagosActivity extends BaseActivity implements View.OnClickListener 
 
         txtMonto = findViewById(R.id.txtMonto);
         layMonto = findViewById(R.id.txtLayMonto);
+
+        lblMonto = findViewById(R.id.lblMonto);
+        lblMonto.setText(control.getMonto());
 
         txtTarjeta.addTextChangedListener(new ObservadorTexto() {
             boolean mostrandoVisa = false;
@@ -187,7 +192,6 @@ public class PagosActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-
         mostrarMetodoPago();
     }
 
@@ -245,7 +249,7 @@ public class PagosActivity extends BaseActivity implements View.OnClickListener 
             layMes.setError("La tarjeta está vencida.");
 
         layMonto.setError(errores.eMonto()
-                ? "Monto mínimo de $100."
+                ? "Debés abonar por lo menos con " + control.getMonto() + "."
                 : "");
     }
 

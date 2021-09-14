@@ -1,7 +1,8 @@
-package com.example.delivereat.model;
+package com.example.delivereat.model.pedidos;
 
 import androidx.annotation.NonNull;
 
+import com.example.delivereat.model.otros.ErrorManager;
 import com.example.delivereat.util.Constantes;
 
 import java.util.Objects;

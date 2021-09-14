@@ -1,13 +1,13 @@
-package com.example.delivereat.model;
+package com.example.delivereat.model.pedidos;
 
+import com.example.delivereat.model.otros.ErrorManager;
+import com.example.delivereat.model.otros.Imagen;
 import com.example.delivereat.util.Constantes;
-
-import java.util.List;
 
 public class Producto {
 
-    private String nombre;
-    private List<Imagen> imagenes;
+    private String nombre = "papas fritas";
+    private Imagen imagen;
 
     public Producto() {
     }
@@ -20,18 +20,12 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public List<Imagen> getImagenes() {
-        return imagenes;
+    public Imagen getImagen() {
+        return imagen;
     }
 
-    public void setImagenes(List<Imagen> imagenes) {
-        this.imagenes = imagenes;
-    }
-
-    public Imagen getPrimeraImagen() {
-        return imagenes.size() == 0
-                ? null
-                : imagenes.get(0);
+    public void setImagen(Imagen imagen) {
+        this.imagen = imagen;
     }
 
     private final Errores errores = new Errores();

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.example.delivereat.R;
 import com.example.delivereat.control.EntregaControl;
 import com.example.delivereat.control.IControl;
-import com.example.delivereat.model.Entrega;
+import com.example.delivereat.model.pedidos.Entrega;
 import com.example.delivereat.ui.abstracts.BaseActivity;
 import com.example.delivereat.ui.abstracts.ObservadorLimpiador;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -100,8 +100,7 @@ public class EntregaActivity extends BaseActivity {
                     timeSetListener,
                     calendar.get(Calendar.HOUR_OF_DAY),
                     calendar.get(Calendar.MINUTE),
-                    false).
-                    show();
+                    false).show();
         };
         DatePickerDialog dp = new DatePickerDialog(
                 EntregaActivity.this,
@@ -131,6 +130,10 @@ public class EntregaActivity extends BaseActivity {
 
         errorFecha += errores.eFechaMinima()
                 ? "Por lo menos dentro de una hora."
+                : "";
+
+        errorFecha += errores.eRangoHoras()
+                ? "Horas hábiles: de 8 a 23:59"
                 : "";
 
         layEntrega.setError(errorFecha);

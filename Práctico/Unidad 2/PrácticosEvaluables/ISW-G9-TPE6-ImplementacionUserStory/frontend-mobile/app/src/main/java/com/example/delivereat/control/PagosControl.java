@@ -1,9 +1,10 @@
 package com.example.delivereat.control;
 
-import com.example.delivereat.model.Pago;
-import com.example.delivereat.model.Pedido;
+import com.example.delivereat.model.pedidos.Pago;
+import com.example.delivereat.model.pedidos.Pedido;
 import com.example.delivereat.persistencia.Datos;
 import com.example.delivereat.ui.activities.loquesea.PagosActivity;
+import com.example.delivereat.util.Constantes;
 
 public class PagosControl implements IControl {
 
@@ -49,5 +50,9 @@ public class PagosControl implements IControl {
         pago.setYearVto(activity.getYear());
         pago.setMonto(activity.getMonto());
         pago.setMetodoPago(activity.getMetodoPago());
+    }
+
+    public String getMonto() {
+        return "$ " + pedido.getPago().getMontoPedido();
     }
 }

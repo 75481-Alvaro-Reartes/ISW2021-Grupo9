@@ -1,7 +1,8 @@
-package com.example.delivereat.model;
+package com.example.delivereat.model.pedidos;
 
 import static com.example.delivereat.util.Constantes.MIN_HORA_ENTREGA;
 
+import com.example.delivereat.model.otros.ErrorManager;
 import com.example.delivereat.util.Constantes;
 
 import java.util.Calendar;
@@ -39,14 +40,17 @@ public class Entrega {
     public String cuandoLlega() {
         return entregaLoAntesPosible
                 ? "Llegará lo antes posible"
-                : "Llegará el " + entregaProgramada.get(Calendar.DATE) + " de " + Constantes.MESES[entregaProgramada.get(Calendar.MONTH)] + ".";
+                : "Llegará el " + entregaProgramada.get(Calendar.DATE) + " de "
+                + Constantes.MESES[entregaProgramada.get(Calendar.MONTH)] + " a las " +
+                entregaProgramada.get(Calendar.HOUR_OF_DAY) + ":" +
+                entregaProgramada.get(Calendar.MINUTE) + " horas.";
     }
 
     public class Errores implements ErrorManager {
 
         @Override
         public boolean hayError() {
-            return eFechaRequerida() || eFechaMinima();
+            return eFechaRequerida() || eFechaMinima() || eRangoHoras();
         }
 
         public boolean eFechaRequerida() {
@@ -56,7 +60,18 @@ public class Entrega {
         public boolean eFechaMinima() {
             Calendar minDate = Calendar.getInstance();
             minDate.add(Calendar.HOUR_OF_DAY, MIN_HORA_ENTREGA);
-            return !entregaLoAntesPosible && entregaProgramada != null && minDate.getTime().after(entregaProgramada.getTime());
+
+            return !entregaLoAntesPosible && entregaProgramada != null
+                    && minDate.getTime().after(entregaProgramada.getTime());
+        }
+
+        public boolean eRangoHoras() {
+            return !entregaLoAntesPosible &&
+                    !eFechaRequerida() && !eFechaMinima()
+                    && (
+                            entregaProgramada.get(Calendar.HOUR_OF_DAY) < Constantes.HORA_HABIL_MIN
+                                    || (entregaProgramada.get(Calendar.HOUR_OF_DAY) == 23
+                                    && entregaProgramada.get(Calendar.MINUTE) == 59));
         }
     }
 }

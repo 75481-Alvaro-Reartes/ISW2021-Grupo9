@@ -3,10 +3,11 @@ package com.example.delivereat.control;
 import androidx.annotation.Nullable;
 
 import com.example.delivereat.R;
-import com.example.delivereat.model.Direccion;
-import com.example.delivereat.model.Pedido;
+import com.example.delivereat.model.pedidos.Direccion;
+import com.example.delivereat.model.pedidos.Pedido;
 import com.example.delivereat.persistencia.Datos;
 import com.example.delivereat.service.ClienteApiDireccion;
+import com.example.delivereat.service.ClienteApiRutas;
 import com.example.delivereat.ui.activities.loquesea.UbicacionActivity;
 import com.example.delivereat.util.Constantes;
 
@@ -35,7 +36,12 @@ public class UbicacionControl implements IControl {
 
         activity.setErrores(pedido.getUbicacion().getErrores());
 
-        if (!pedido.getUbicacion().getErrores().hayError()) activity.siguiente();
+        if (!pedido.getUbicacion().getErrores().hayError()){
+            activity.esperar(true);
+            new ClienteApiRutas(this)
+                    .execute(pedido.getUbicacion().getOrigen(), pedido.getUbicacion().getDestino());
+            //activity.siguiente();
+        }
     }
 
     @Override
@@ -92,11 +98,24 @@ public class UbicacionControl implements IControl {
             d.setNumero(resultado.getNumero());
             d.setCiudad(resultado.getCiudad());
             d.setComentario(resultado.getComentario());
+            d.setLat(resultado.getLat());
+            d.setLng(resultado.getLng());
 
             recuperarDatos();
         }
         else {
             activity.toast("Disculpá, todavía no trabajamos en " + resultado.getCiudad());
         }
+    }
+
+    public void recibirResultadoRuta(int distancia) {
+        activity.esperar(false);
+        pedido.getUbicacion().setDistancia(distancia);
+        pedido.getPago().calcularMonto(distancia);
+        activity.siguiente();
+    }
+
+    public void direccionModificada() {
+        pedido.getUbicacion().limpiarCoordenadas();
     }
 }

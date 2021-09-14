@@ -1,36 +1,47 @@
-package com.example.delivereat.model;
+package com.example.delivereat.model.pedidos;
 
+import androidx.annotation.NonNull;
+
+import com.example.delivereat.model.otros.ErrorManager;
 import com.example.delivereat.util.Constantes;
 
 import java.util.Calendar;
 
 public class Pago {
     private double monto;
-
     private String titular;
     private long tarjeta;
     private int cvc;
     private int mesVto = -1;
     private int yearVto;
+    private int montoPedido;
 
-    private MetodoPago metodoPago = MetodoPago.Tarjeta;
+    private MetodoPago mMetodoPago = MetodoPago.Tarjeta;
 
     public Pago() {
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return  esTarjeta()
-                ? "Tarjeta Visa **** " + String.valueOf(tarjeta).substring(12)
-                : "Efectivo: $" + monto;
+        return  "Costo:    $ " + montoPedido + "\n" +
+                (
+                        esTarjeta()
+                                ? "Tarjeta Visa **** " + String.valueOf(tarjeta).substring(12)
+                                : "Efectivo:  $" + (int) monto
+                );
     }
 
+    /**
+     * Retorna el método pago del pedido
+     * @return el método de pago
+     */
     public MetodoPago getMetodoPago() {
-        return metodoPago;
+        return mMetodoPago;
     }
 
     public void setMetodoPago(MetodoPago metodoPago) {
-        this.metodoPago = metodoPago;
+        mMetodoPago = metodoPago;
     }
 
     public double getMonto() {
@@ -81,6 +92,14 @@ public class Pago {
         this.yearVto = yearVto;
     }
 
+    public int getMontoPedido() {
+        return montoPedido;
+    }
+
+    public void setMontoPedido(int montoPedido) {
+        this.montoPedido = montoPedido;
+    }
+
     private final Errores errores = new Errores();
 
     public Errores getErrores() {
@@ -88,7 +107,11 @@ public class Pago {
     }
 
     public boolean esTarjeta() {
-        return metodoPago == MetodoPago.Tarjeta;
+        return mMetodoPago == MetodoPago.Tarjeta;
+    }
+
+    public void calcularMonto(int distancia) {
+        montoPedido = (int) (Constantes.MONTO_POR_500_METROS *  Math.ceil(distancia/ 500d));
     }
 
     public class Errores implements ErrorManager {
@@ -119,7 +142,7 @@ public class Pago {
         }
 
         public boolean eMonto() {
-            return !esTarjeta() && monto < Constantes.MIN_MONTO;
+            return !esTarjeta() && monto < montoPedido;
         }
 
         public boolean eTarjetaNoVisa() {

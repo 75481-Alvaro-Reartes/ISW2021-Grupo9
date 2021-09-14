@@ -1,4 +1,6 @@
-package com.example.delivereat.model;
+package com.example.delivereat.model.pedidos;
+
+import com.example.delivereat.model.otros.ErrorManager;
 
 public class Pedido {
 

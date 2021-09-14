@@ -38,6 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * guardarlo, y retornarlo.
      * @return Controlador de la activity.
      */
+    @Nullable
     protected abstract IControl getControl();
     protected abstract int getLayoutId();
     protected abstract void iniciarViews();
@@ -94,19 +95,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(animFinEntrada, animFinSalida);
-        mControl.guardarDatos();
+        if (mControl != null) mControl.guardarDatos();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mControl.guardarDatos();
+        if (mControl != null) mControl.guardarDatos();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mControl.recuperarDatos();
+        if (mControl != null)mControl.recuperarDatos();
     }
 
     protected final void setAnimacionNuevaActivity(int animNuevaEntrada, int animNuevaSalida) {

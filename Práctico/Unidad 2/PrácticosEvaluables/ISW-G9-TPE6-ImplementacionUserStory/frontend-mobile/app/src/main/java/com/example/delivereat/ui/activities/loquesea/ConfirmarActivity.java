@@ -1,8 +1,6 @@
 package com.example.delivereat.ui.activities.loquesea;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,9 +8,8 @@ import android.widget.TextView;
 import com.example.delivereat.R;
 import com.example.delivereat.control.ConfirmarControl;
 import com.example.delivereat.control.IControl;
-import com.example.delivereat.model.Entrega;
-import com.example.delivereat.model.Imagen;
-import com.example.delivereat.model.MetodoPago;
+import com.example.delivereat.model.otros.Imagen;
+import com.example.delivereat.model.pedidos.MetodoPago;
 import com.example.delivereat.ui.abstracts.BaseActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;

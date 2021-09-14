@@ -1,6 +1,6 @@
 package com.example.delivereat.control;
 
-import com.example.delivereat.model.Pedido;
+import com.example.delivereat.model.pedidos.Pedido;
 import com.example.delivereat.persistencia.Datos;
 import com.example.delivereat.ui.activities.loquesea.ProductosActivity;
 
@@ -25,11 +25,11 @@ public class ProductosControl implements IControl{
     @Override
     public void recuperarDatos() {
         activity.setProducto(pedido.getProducto().getNombre());
-        activity.setImagenes(pedido.getProducto().getImagenes());
+        activity.mostrarImagen(pedido.getProducto().getImagen());
     }
 
     public void guardarDatos() {
         pedido.getProducto().setNombre(activity.getProducto());
-        pedido.getProducto().setImagenes(activity.getImagenes());
+        pedido.getProducto().setImagen(activity.getImagen());
     }
 }

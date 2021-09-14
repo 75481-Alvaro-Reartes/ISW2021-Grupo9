@@ -1,6 +1,6 @@
 package com.example.delivereat.control;
 
-import com.example.delivereat.model.Pedido;
+import com.example.delivereat.model.pedidos.Pedido;
 import com.example.delivereat.persistencia.Datos;
 import com.example.delivereat.ui.activities.loquesea.EntregaActivity;
 

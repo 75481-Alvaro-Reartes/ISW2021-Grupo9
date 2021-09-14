@@ -1,8 +1,7 @@
 package com.example.delivereat.control;
 
-import com.example.delivereat.model.MetodoPago;
-import com.example.delivereat.model.Pago;
-import com.example.delivereat.model.Pedido;
+import com.example.delivereat.model.pedidos.Pago;
+import com.example.delivereat.model.pedidos.Pedido;
 import com.example.delivereat.persistencia.Datos;
 import com.example.delivereat.service.IClientePagoPedido;
 import com.example.delivereat.service.MockPagoEfectivo;
@@ -58,7 +57,7 @@ public class ConfirmarControl implements IObserverPago, IControl {
         activity.setOrigen(pedido.getUbicacion().getOrigen().toString());
         activity.setDestino(pedido.getUbicacion().getDestino().toString());
         activity.setPago(pedido.getPago().toString());
-        activity.setImgProducto(pedido.getProducto().getPrimeraImagen());
+        activity.setImgProducto(pedido.getProducto().getImagen());
         activity.setMetodoPago(pedido.getPago().getMetodoPago());
         activity.setLlegada(pedido.getEntrega().cuandoLlega());
 

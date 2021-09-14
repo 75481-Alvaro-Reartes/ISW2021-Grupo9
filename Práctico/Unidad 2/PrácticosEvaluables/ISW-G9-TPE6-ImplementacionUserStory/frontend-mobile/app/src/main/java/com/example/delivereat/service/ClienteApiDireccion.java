@@ -4,7 +4,8 @@ package com.example.delivereat.service;
 import android.os.AsyncTask;
 
 import com.example.delivereat.control.UbicacionControl;
-import com.example.delivereat.model.Direccion;
+import com.example.delivereat.model.pedidos.Direccion;
+import com.example.delivereat.util.Constantes;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,8 +17,7 @@ import java.net.URL;
 
 public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
 
-    private static final String KEYCODE = "AIzaSyB9Uuk4x2uMaCjul3jdbFFC8TTN57CD6D4";
-    private UbicacionControl control;
+    private final UbicacionControl control;
     private Direccion direccion;
 
     public ClienteApiDireccion(UbicacionControl control) {
@@ -31,7 +31,11 @@ public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
         direccion = direcciones[0];
 
         try {
-            inputStream = new URL("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + direcciones[0].getLat() + "," + direcciones[0].getLng() + "&key=" + KEYCODE).openStream();
+            inputStream = new URL(
+                    Constantes.MAPS_API_URL + "geocode/json?latlng=" +
+                            direcciones[0].getLat() + "," + direcciones[0].getLng() +
+                            "&key=" + Constantes.KEYCODE)
+                    .openStream();
 
             if (inputStream != null) {
 
@@ -61,8 +65,6 @@ public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
         }
 
         try {
-
-            System.out.println(body);
             JSONObject json = new JSONObject(body);
 
             JSONArray resultado = json.getJSONArray("results").getJSONObject(0).getJSONArray("address_components");

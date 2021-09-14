@@ -5,15 +5,13 @@ import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle;
 
 import com.example.delivereat.R;
-import com.example.delivereat.model.Direccion;
-import com.example.delivereat.model.Pedido;
+import com.example.delivereat.model.pedidos.Direccion;
 import com.example.delivereat.persistencia.Datos;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.button.MaterialButton;
 

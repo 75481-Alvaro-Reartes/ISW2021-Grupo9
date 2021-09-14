@@ -2,7 +2,7 @@ package com.example.delivereat.service;
 
 import android.os.Handler;
 
-import com.example.delivereat.model.Pago;
+import com.example.delivereat.model.pedidos.Pago;
 import com.example.delivereat.ui.activities.loquesea.IObserverPago;
 import com.example.delivereat.util.Constantes;
 
