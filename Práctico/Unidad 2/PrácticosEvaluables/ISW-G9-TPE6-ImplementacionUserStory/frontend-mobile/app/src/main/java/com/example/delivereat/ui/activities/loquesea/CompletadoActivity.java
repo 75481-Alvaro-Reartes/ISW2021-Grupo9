@@ -8,6 +8,9 @@ import android.os.Bundle;
 import com.example.delivereat.R;
 import com.example.delivereat.ui.activities.otros.MenuActivity;
 
+/**
+ * Interfaz de pedido completado
+ */
 public class CompletadoActivity extends AppCompatActivity {
 
     @Override

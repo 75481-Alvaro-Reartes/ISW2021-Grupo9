@@ -11,9 +11,8 @@ import com.example.delivereat.ui.activities.loquesea.IObserverPago;
 
 public class ConfirmarControl implements IObserverPago, IControl {
 
-    private ConfirmarActivity mActivity;
-    private IClientePagoPedido mPagos;
-    private Pedido mPedido;
+    private final ConfirmarActivity mActivity;
+    private final Pedido mPedido;
 
     public ConfirmarControl(ConfirmarActivity activity) {
         mActivity = activity;
@@ -24,20 +23,21 @@ public class ConfirmarControl implements IObserverPago, IControl {
      * Metodo que confirma un pedido sin errores y si los tiene avisa
      */
     public void confirmar() {
-        if (pedido.getErrores().hayError()){
-            activity.setError(true);
+        if (mPedido.getErrores().hayError()){
+            mActivity.setError(true);
             return;
         }
-        activity.esperar(true);
+        mActivity.esperar(true);
 
-        if (pedido.getPago().esTarjeta()){
-            pagos = new MockPagoTarjeta().setObserver(this);
+        IClientePagoPedido mPagos;
+        if (mPedido.getPago().esTarjeta()){
+            mPagos = new MockPagoTarjeta().setObserver(this);
         }
         else {
-            pagos = new MockPagoEfectivo().setObserver(this);
+            mPagos = new MockPagoEfectivo().setObserver(this);
         }
 
-        pagos.validar(new Pago());
+        mPagos.validar(new Pago());
     }
 
     /**
@@ -46,12 +46,12 @@ public class ConfirmarControl implements IObserverPago, IControl {
      */
     @Override
     public void tarjetaValida(boolean valida) {
-        activity.esperar(false);
+        mActivity.esperar(false);
         if (valida) {
-            activity.siguiente();
+            mActivity.siguiente();
             limpiarDatos();
         }
-        else activity.toast("No se pudo verificar la tarjeta.");
+        else mActivity.toast("No se pudo verificar la tarjeta.");
     }
 
     private void limpiarDatos() {
@@ -60,15 +60,15 @@ public class ConfirmarControl implements IObserverPago, IControl {
 
     @Override
     public void recuperarDatos() {
-        activity.setProducto(pedido.getProducto().getNombre());
-        activity.setOrigen(pedido.getUbicacion().getOrigen().toString());
-        activity.setDestino(pedido.getUbicacion().getDestino().toString());
-        activity.setPago(pedido.getPago().toString());
-        activity.setImgProducto(pedido.getProducto().getImagen());
-        activity.setMetodoPago(pedido.getPago().getMetodoPago());
-        activity.setLlegada(pedido.getEntrega().cuandoLlega());
+        mActivity.setProducto(mPedido.getProducto().getNombre());
+        mActivity.setOrigen(mPedido.getUbicacion().getOrigen().toString());
+        mActivity.setDestino(mPedido.getUbicacion().getDestino().toString());
+        mActivity.setPago(mPedido.getPago().toString());
+        mActivity.setImgProducto(mPedido.getProducto().getImagen());
+        mActivity.setMetodoPago(mPedido.getPago().getMetodoPago());
+        mActivity.setLlegada(mPedido.getEntrega().cuandoLlega());
 
-        activity.setError(false);
+        mActivity.setError(false);
     }
 
     @Override

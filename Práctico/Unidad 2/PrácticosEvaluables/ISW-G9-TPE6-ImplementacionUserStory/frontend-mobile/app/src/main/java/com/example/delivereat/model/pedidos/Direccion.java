@@ -7,6 +7,9 @@ import com.example.delivereat.util.Constantes;
 
 import java.util.Objects;
 
+/**
+ * Clase del modelo sobre la dirección del pedido.
+ */
 public class Direccion {
 
     private double mLat;

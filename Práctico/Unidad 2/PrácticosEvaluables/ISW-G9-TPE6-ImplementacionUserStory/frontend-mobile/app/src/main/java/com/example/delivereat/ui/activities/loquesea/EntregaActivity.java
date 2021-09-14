@@ -6,6 +6,8 @@ import android.app.TimePickerDialog;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.example.delivereat.R;
 import com.example.delivereat.control.EntregaControl;
 import com.example.delivereat.control.IControl;
@@ -19,21 +21,51 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * Clase de la interfaz de usuario de entrega del pedido.
+ */
 public class EntregaActivity extends BaseActivity {
 
-    private TextInputLayout layEntrega;
-    private SwitchMaterial switchEntrega;
-    private TextView lblSwitch;
-    private boolean entregaPronto = true;
-    private Calendar fechaHoraEntrega;
-    private TextInputEditText dtpEntrega;
+    /**
+     * Layout del campo de texto de entrega.
+     */
+    private TextInputLayout mLayEntrega;
 
-    private EntregaControl control;
+    /**
+     * Switch para alternar entre entrega lo antes posible o entrega programada.
+     */
+    private SwitchMaterial mSwitchEntrega;
+
+    /**
+     * Label que muestra si la entrega es lo antes posible o programada en función del
+     * estado del switch.
+     */
+    private TextView mLblSwitch;
+
+    /**
+     * Atributo para representar si se entrega lo antes posible o no.
+     */
+    private boolean mEntregaPronto = true;
+
+    /**
+     * Fecha y hora de la entrega.
+     */
+    private Calendar mFechaHoraEntrega;
+
+    /**
+     * Campo de texto con la fecha y hora de entrega.
+     */
+    private TextInputEditText mDtpEntrega;
+
+    /**
+     * Controlador de la interfaza gráfica de usuario.
+     */
+    private EntregaControl mControl;
 
     @Override
     protected IControl getControl() {
-        control = new EntregaControl(this);
-        return control;
+        mControl = new EntregaControl(this);
+        return mControl;
     }
 
     @Override
@@ -43,43 +75,53 @@ public class EntregaActivity extends BaseActivity {
 
     @Override
     protected void iniciarViews() {
-        lblSwitch = findViewById(R.id.lblSwitch);
+        mLblSwitch = findViewById(R.id.lblSwitch);
 
-        layEntrega = findViewById(R.id.layEntrega);
-        dtpEntrega = findViewById(R.id.dtpEntrega);
-        switchEntrega = findViewById(R.id.switchTiempo);
+        mLayEntrega = findViewById(R.id.layEntrega);
+        mDtpEntrega = findViewById(R.id.dtpEntrega);
+        mSwitchEntrega = findViewById(R.id.switchTiempo);
 
-        dtpEntrega.setOnClickListener(x -> mostrarDialogoFecha());
-        switchEntrega.setOnClickListener(x -> alternarTiempoEntrega());
-        lblSwitch.setOnClickListener(x -> {
+        mDtpEntrega.setOnClickListener(x -> mostrarDialogoFecha());
+        mSwitchEntrega.setOnClickListener(x -> alternarTiempoEntrega());
+        mLblSwitch.setOnClickListener(x -> {
             alternarTiempoEntrega();
-            switchEntrega.setChecked(entregaPronto);
+            mSwitchEntrega.setChecked(mEntregaPronto);
         });
-        findViewById(R.id.txtSiguiente).setOnClickListener(x -> control.siguiente());
+        findViewById(R.id.txtSiguiente).setOnClickListener(x -> mControl.siguiente());
 
-        dtpEntrega.addTextChangedListener(new ObservadorLimpiador() {
+        mDtpEntrega.addTextChangedListener(new ObservadorLimpiador() {
             @Override
             public TextInputLayout setEditTextLayout() {
-                return layEntrega;
+                return mLayEntrega;
             }
         });
     }
 
+    /**
+     * Alterna entre tiempo de entrega lo antes posible o programado.
+     */
     private void alternarTiempoEntrega() {
-        entregaPronto = !entregaPronto;
+        mEntregaPronto = !mEntregaPronto;
         actualizarEntrega();
     }
 
+    /**
+     * Actualiza la visualización del switch con el momento de entrega.
+     */
     private void actualizarEntrega() {
-        layEntrega.setVisibility(entregaPronto
+        mLayEntrega.setVisibility(mEntregaPronto
                 ? View.GONE
                 : View.VISIBLE);
-        lblSwitch.setText(entregaPronto
+        mLblSwitch.setText(mEntregaPronto
                 ? "Recibirlo lo antes posible"
                 : "Recibirlo en fecha y hora");
-        switchEntrega.setChecked(entregaPronto);
+        mSwitchEntrega.setChecked(mEntregaPronto);
     }
 
+    /**
+     * Muestra el diálogo de selección de fecha y hora, seteando la fecha mínima y máxima
+     * en función de la fecha actual.
+     */
     private void mostrarDialogoFecha() {
         final Calendar calendar = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
@@ -90,7 +132,7 @@ public class EntregaActivity extends BaseActivity {
             TimePickerDialog.OnTimeSetListener timeSetListener = (view1, hourOfDay, minute) -> {
                 calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
                 calendar.set(Calendar.MINUTE,minute);
-                fechaHoraEntrega = calendar;
+                mFechaHoraEntrega = calendar;
 
                 setTxtEntrega();
             };
@@ -116,13 +158,20 @@ public class EntregaActivity extends BaseActivity {
         dp.show();
     }
 
+    /**
+     * Muestra la fecha y hora de entrega elegida en el campo de texto.
+     */
     private void setTxtEntrega() {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
 
-        dtpEntrega.setText(simpleDateFormat.format(fechaHoraEntrega.getTime()));
+        mDtpEntrega.setText(simpleDateFormat.format(mFechaHoraEntrega.getTime()));
     }
 
+    /**
+     * Muestra los errores de la interfaz actual en los campos de texto correspondientes.
+     * @param errores Clase con los errores de la interfaz entrega.
+     */
     public void setErrores(Entrega.Errores errores) {
         String errorFecha = errores.eFechaRequerida()
                 ? "Ingresá cuando querés que te llevemos el pedido."
@@ -136,32 +185,52 @@ public class EntregaActivity extends BaseActivity {
                 ? "Horas hábiles: de 8 a 23:59"
                 : "";
 
-        layEntrega.setError(errorFecha);
+        mLayEntrega.setError(errorFecha);
     }
 
+    /**
+     * Avanza a la actividad de pagos.
+     */
     public void siguiente() {
         navegar(PagosActivity.class);
     }
 
+    /**
+     * Setea el momento de entrega.
+     * @param entregaPronto Entrega lo antes posible o en momento programado.
+     */
     public void setEntregaPronto(boolean entregaPronto) {
-        this.entregaPronto = entregaPronto;
+        this.mEntregaPronto = entregaPronto;
         actualizarEntrega();
     }
 
-    public void setFechaEntrega(Calendar fechaHoraEntrega) {
+    /**
+     * Setea la fecha y hora de entrega en caso de haberla.
+     * @param fechaHoraEntrega Fecha y hora de entrega.
+     */
+    public void setFechaEntrega(@Nullable Calendar fechaHoraEntrega) {
         if (fechaHoraEntrega == null) return;
 
-        this.fechaHoraEntrega = fechaHoraEntrega;
+        this.mFechaHoraEntrega = fechaHoraEntrega;
         setTxtEntrega();
     }
 
+    /**
+     * Indica si entrega o no el pedido lo antes posible.
+     * @return True si entrega el pedido lo antes posible.
+     */
     public boolean getEntregaPronto() {
-        return entregaPronto;
+        return mEntregaPronto;
     }
 
+    /**
+     * Obtiene la fecha y hora de entrega del pedido, en caso de haberla.
+     * @return Fecha y hora de entrega del pedido.
+     */
+    @Nullable
     public Calendar getFechaHoraEntrega() {
-        return entregaPronto
+        return mEntregaPronto
                 ? null
-                : fechaHoraEntrega;
+                : mFechaHoraEntrega;
     }
 }

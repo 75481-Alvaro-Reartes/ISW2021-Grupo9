@@ -7,6 +7,9 @@ import com.example.delivereat.util.Constantes;
 
 import java.util.Calendar;
 
+/**
+ * Clase del modelo sobre el pago.
+ */
 public class Pago {
     private double mMonto;
     private String mTitular;
@@ -80,7 +83,8 @@ public class Pago {
         return mMesVto;
     }
 
-    public void setMesVto(int mesVto) { mMesVto = mesVto;
+    public void setMesVto(int mesVto) {
+        mMesVto = mesVto;
     }
 
     public int getYearVto() {
@@ -95,10 +99,6 @@ public class Pago {
         return mMontoPedido;
     }
 
-    public void setMontoPedido(int montoPedido) {
-        mMontoPedido = montoPedido;
-    }
-
     private final Errores errores = new Errores();
 
     public Errores getErrores() {
@@ -111,6 +111,10 @@ public class Pago {
 
     public void calcularMonto(int distancia) {
         mMontoPedido = (int) (Constantes.MONTO_POR_500_METROS *  Math.ceil(distancia/ 500d));
+        // En caso de ingresar la ubicación del origen o destino como texto y no a través de Maps,
+        // distancia será igual a 0, provocando que monto pedido lo sea a su vez. Por el momento
+        // se decide mockear el monto en $350.
+        if (mMontoPedido == 0) mMontoPedido = 350;
     }
 
     public class Errores implements ErrorManager {

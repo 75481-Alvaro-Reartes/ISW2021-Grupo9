@@ -7,6 +7,9 @@ import com.example.delivereat.util.Constantes;
 
 import java.util.Calendar;
 
+/**
+ * Clase del modelo sobre la entrega del pedido.
+ */
 public class Entrega {
 
     private Calendar mEntregaProgramada;

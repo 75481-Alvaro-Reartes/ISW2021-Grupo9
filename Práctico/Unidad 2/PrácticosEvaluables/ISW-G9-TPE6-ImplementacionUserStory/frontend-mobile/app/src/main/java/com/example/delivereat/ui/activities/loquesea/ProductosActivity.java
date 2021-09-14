@@ -1,13 +1,10 @@
 package com.example.delivereat.ui.activities.loquesea;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
-import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -25,18 +22,44 @@ import com.example.delivereat.util.Constantes;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-
+/**
+ * Clase de la interfaz gráfica de usuario para ingresar el producto del pedido.
+ */
 public class ProductosActivity extends BaseActivity {
 
-    private TextInputLayout layProducto;
-    private double filesKB;
-    private TextView lblPesoImg;
-    private Imagen imagen;
-    private ImageView imgProducto;
-    private ConstraintLayout layoutImagen;
+    /**
+     * Layout del campo de texto del producto.
+     */
+    private TextInputLayout mLayProducto;
 
-    private ProductosControl control;
+    /**
+     * Label con el peso de la imágen ingresada.
+     */
+    private TextView mLblPesoImg;
 
+    /**
+     * Imágen ingreasda.
+     */
+    private Imagen mImagen;
+
+    /**
+     * View con la imágen ingresada por el usuario.
+     */
+    private ImageView mImgProducto;
+
+    /**
+     * Layout que contiene la imágen del producto y el botón para borrarla.
+     */
+    private ConstraintLayout mLayoutImagen;
+
+    /**
+     * Controlador de la interfaz de usuario.
+     */
+    private ProductosControl mControl;
+
+    /**
+     * Objeto encargado de obtener la imágen del producto.
+     */
     ActivityResultLauncher<String> mGetContent;
 
     @Override
@@ -46,27 +69,27 @@ public class ProductosActivity extends BaseActivity {
 
     @Override
     protected IControl getControl() {
-        control = new ProductosControl(this);
-        return control;
+        mControl = new ProductosControl(this);
+        return mControl;
     }
 
     @Override
     protected void iniciarViews() {
-        imgProducto = findViewById(R.id.imgProducto);
-        lblPesoImg = findViewById(R.id.lblPesoImg);
-        layProducto = findViewById(R.id.txtLayProducto);
+        mImgProducto = findViewById(R.id.imgProducto);
+        mLblPesoImg = findViewById(R.id.lblPesoImg);
+        mLayProducto = findViewById(R.id.txtLayProducto);
         TextInputEditText txtProducto = findViewById(R.id.txtProducto);
-        layoutImagen = findViewById(R.id.layoutImgProducto);
+        mLayoutImagen = findViewById(R.id.layoutImgProducto);
 
         mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 this::mostrarImagen);
 
-        findViewById(R.id.txtSiguiente).setOnClickListener(x -> control.clickSiguiente());
+        findViewById(R.id.txtSiguiente).setOnClickListener(x -> mControl.clickSiguiente());
 
         txtProducto.addTextChangedListener(new ObservadorLimpiador() {
             @Override
             public TextInputLayout setEditTextLayout() {
-                return layProducto;
+                return mLayProducto;
             }
         });
 
@@ -74,19 +97,30 @@ public class ProductosActivity extends BaseActivity {
         findViewById(R.id.btnBorrarImg).setOnClickListener(x -> borrarImagen());
     }
 
+    /**
+     * Borra la imágen ingresada.
+     */
     private void borrarImagen() {
-        imgProducto.setImageBitmap(null);
-        imagen = null;
-        lblPesoImg.setText("0KB");
-        layoutImagen.setVisibility(View.GONE);
+        mImgProducto.setImageBitmap(null);
+        mImagen = null;
+        mLblPesoImg.setText("0KB");
+        mLayoutImagen.setVisibility(View.GONE);
     }
 
+    /**
+     * Muestra la imágen ingresada a partir de su URI.
+     * @param uri URI de la imágen a mostrar del producto.
+     */
     public void mostrarImagen(Uri uri) {
-        imagen = ImagenFactory.fabricar(uri, getContentResolver());
+        mImagen = ImagenFactory.fabricar(uri, getContentResolver());
 
-        mostrarImagen(imagen);
+        mostrarImagen(mImagen);
     }
 
+    /**
+     * Muestra la imágen del producto a partir de si objeto del modelo.
+     * @param imagen Objeto con la imágen del producto.
+     */
     public void mostrarImagen(Imagen imagen) {
         if (imagen == null) return;
 
@@ -95,141 +129,57 @@ public class ProductosActivity extends BaseActivity {
             return;
         }
 
-        imgProducto.setImageBitmap(imagen.getBm());
-        lblPesoImg.setText(imagen.getFormatedSize());
-        layoutImagen.setVisibility(View.VISIBLE);
+        mImgProducto.setImageBitmap(imagen.getBm());
+        mLblPesoImg.setText(imagen.getFormatedSize());
+        mLayoutImagen.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Abre la interfaz para selección de imágenes.
+     */
     @SuppressLint("IntentReset")
     private void abrirSelectorImagen() {
         mGetContent.launch("image/*");
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setType("image/*");
-//
-//        @SuppressLint("IntentReset")
-//        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        pickIntent.setType("image/*");
-//        pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-//
-//        Intent chooserIntent = Intent.createChooser(intent, "Dónde buscar la imagen?");
-//        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
-//
-//        startActivityForResult(chooserIntent, 777);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 777 && resultCode == RESULT_OK && null != data) {
-//                extraerPathImagenes(data);
-//                mostrarPesoImagenes();
-//            }
-//
-//    }
-
-    private void extraerPathImagenes(Intent data) {
-        try{
-            int imagenesOmitidas = 0;
-
-            if (data.getClipData() != null) {
-                ClipData mClipData = data.getClipData();
-
-                for (int i = 0; i < mClipData.getItemCount(); i++) {
-
-                    ClipData.Item item = mClipData.getItemAt(i);
-
-                    Imagen imagen = ImagenFactory.fabricar(item.getUri(), getContentResolver());
-                    if (imagen == null) continue;
-
-                    if (imagen.getSize() >= 5000) {
-                        imagenesOmitidas++;
-                        continue;
-                    }
-                    if (filesKB + imagen.getSize() >= 5000) {
-                        imagenesOmitidas++;
-                        continue;
-                    }
-                    filesKB = imagen.getSize();
-                    //adapter.addImagen(imagen);
-                }
-            }
-
-            if (imagenesOmitidas != 0) {
-                Toast.makeText(
-                        this,
-                        "Se han omitido " + imagenesOmitidas + " imágenes por exceder 5 MB en total",
-                        Toast.LENGTH_LONG)
-                        .show();
-            }
-
-            //hayImagenes();
-        }
-        catch(Exception ex) {
-            Toast.makeText(this, "Lo sentimos, ocurrió un error :(", Toast.LENGTH_LONG).show();
-        }
-    }
-
-//    private void hayImagenes() {
-//        listaImagenes.setVisibility(adapter.getItemCount() == 0
-//                ? View.GONE
-//                : View.VISIBLE);
-//    }
-
-//    public void imagenEliminada(Imagen imagen) {
-//        filesKB -= imagen.getSize();
-//        if (filesKB < 0) filesKB = 0;
-//        mostrarPesoImagenes();
-//        hayImagenes();
-//    }
-
-//    private void mostrarPesoImagenes() {
-//        String stringSize;
-//
-//        if (filesKB >= 1000) {
-//            stringSize = round(filesKB / 1000d) + " MB";
-//        }
-//        else if (filesKB == 0) {
-//            stringSize = "0 KB";
-//        }
-//        else {
-//            stringSize = round(filesKB) + " KB";
-//        }
-//        lblPesoImg.setText(stringSize);
-//    }
-
+    /**
+     * Obtiene el producto ingresado por el usuario.
+     * @return Producto ingresado.
+     */
     public String getProducto() {
         return getTxtString(R.id.txtProducto);
     }
 
-    //public List<Imagen> getImagenes() {
-    //    return adapter.getImagenes();
-    //}
-
+    /**
+     * Muestra los errores del usuario en la interfaz grpafica.
+     * @param errores Objeto con errores en la interfaz del usuario.
+     */
     public void setErrores(Producto.Errores errores) {
-        layProducto.setError(errores.eRequerido() ? "Ingresá un producto (5 a 280 caracteres)." : "");
+        mLayProducto.setError(errores.eRequerido()
+                ? "Ingresá un producto (5 a 280 caracteres)."
+                : "");
     }
 
+    /**
+     * Navega hacia la interfaz de ubicación.
+     */
     public void siguiente() {
         navegar(UbicacionActivity.class);
     }
 
+    /**
+     * Setea el producto previamente ingresado por el usuario.
+     * @param producto Producto previamente ingresado.
+     */
     public void setProducto(String producto) {
         setTxtString(R.id.txtProducto, producto);
     }
 
+    /**
+     * Obtiene la imágen ingresada por el usuario.
+     * @return Imágen del producto.
+     */
     public Imagen getImagen() {
-        return imagen;
+        return mImagen;
     }
-
-//    public void setImagenes(List<Imagen> imagenes) {
-//        if (imagenes == null) return;
-//        filesKB = 0;
-//        iniciarRecycler();
-//        for (Imagen img: imagenes) {
-//            adapter.addImagen(img);
-//            filesKB += img.getSize();
-//        }
-//        mostrarPesoImagenes();
-//        hayImagenes();
-//    }
 }

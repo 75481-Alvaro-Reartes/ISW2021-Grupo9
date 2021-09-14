@@ -23,20 +23,23 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
+/**
+ * Clase de la interfaz gráfica para cargar la ubicación del origen y destino del pedido.
+ */
 public class UbicacionActivity extends BaseActivity {
 
-    private AutoCompleteTextView txtCiudadOrigen, txtCiudadDestino;
-    private TextInputEditText txtNumO, txtNumD;
-    private TextInputLayout layCalleO, layCalleD, layNumO, layNumD, layCiudadOrigen, layCiudadDestino;
-    private LinearProgressIndicator progress;
-    private ActionMenuItemView btnSiguiente;
+    private AutoCompleteTextView mTxtCiudadOrigen, mTxtCiudadDestino;
+    private TextInputEditText mTxtNumO, mTxtNumD;
+    private TextInputLayout mLayCalleO, mLayCalleD, mLayNumO, mLayNumD, mLayCiudadOrigen, mLayCiudadDestino;
+    private LinearProgressIndicator mProgress;
+    private ActionMenuItemView mBtnSiguiente;
 
-    private UbicacionControl control;
+    private UbicacionControl mControl;
 
     @Override
     protected IControl getControl() {
-        control = new UbicacionControl(this);
-        return control;
+        mControl = new UbicacionControl(this);
+        return mControl;
     }
 
     @Override
@@ -46,69 +49,69 @@ public class UbicacionActivity extends BaseActivity {
 
     @Override
     protected void iniciarViews() {
-        txtCiudadOrigen = findViewById(R.id.txtCiudadOrigen);
-        txtCiudadDestino = findViewById(R.id.txtCiudadDestino);
-        control.iniciarCiudades();
+        mTxtCiudadOrigen = findViewById(R.id.txtCiudadOrigen);
+        mTxtCiudadDestino = findViewById(R.id.txtCiudadDestino);
+        mControl.iniciarCiudades();
 
         TextInputEditText txtCalleO = findViewById(R.id.txtCalleOrigen);
         TextInputEditText txtCalleD = findViewById(R.id.txtCalleDestino);
-        txtNumO = findViewById(R.id.txtNumOrigen);
-        txtNumD = findViewById(R.id.txtNumDestino);
+        mTxtNumO = findViewById(R.id.txtNumOrigen);
+        mTxtNumD = findViewById(R.id.txtNumDestino);
 
-        layCiudadOrigen = findViewById(R.id.txtLayCiudadOrigen);
-        layCiudadDestino = findViewById(R.id.txtLayCiudadDestino);
-        layCalleO = findViewById(R.id.txtLayCalleOrigen);
-        layCalleD = findViewById(R.id.txtLayCalleDestino);
-        layNumO = findViewById(R.id.txtLayNumOrigen);
-        layNumD = findViewById(R.id.txtLayNumDestino);
+        mLayCiudadOrigen = findViewById(R.id.txtLayCiudadOrigen);
+        mLayCiudadDestino = findViewById(R.id.txtLayCiudadDestino);
+        mLayCalleO = findViewById(R.id.txtLayCalleOrigen);
+        mLayCalleD = findViewById(R.id.txtLayCalleDestino);
+        mLayNumO = findViewById(R.id.txtLayNumOrigen);
+        mLayNumD = findViewById(R.id.txtLayNumDestino);
 
-        progress = findViewById(R.id.progressUbicacion);
-        btnSiguiente = findViewById(R.id.txtSiguiente);
+        mProgress = findViewById(R.id.progressUbicacion);
+        mBtnSiguiente = findViewById(R.id.txtSiguiente);
 
         findViewById(R.id.btnMapsOrigen).setOnClickListener(x -> abrirMapa(Constantes.UBICACION_ORIGEN));
         findViewById(R.id.btnMapsDestino).setOnClickListener(x -> abrirMapa(Constantes.UBICACION_DESTINO));
 
-        btnSiguiente.setOnClickListener(x -> control.siguiente());
+        mBtnSiguiente.setOnClickListener(x -> mControl.siguiente());
 
         txtCalleO.addTextChangedListener(new ObservadorLimpiador() {
             @Override
             public TextInputLayout setEditTextLayout() {
-                return layCalleO;
+                return mLayCalleO;
             }
         });
 
         txtCalleD.addTextChangedListener(new ObservadorLimpiador() {
             @Override
             public TextInputLayout setEditTextLayout() {
-                return layCalleD;
+                return mLayCalleD;
             }
         });
 
-        txtNumO.addTextChangedListener(new ObservadorLimpiador() {
+        mTxtNumO.addTextChangedListener(new ObservadorLimpiador() {
             @Override
             public TextInputLayout setEditTextLayout() {
-                return layNumO;
+                return mLayNumO;
             }
         });
 
-        txtNumD.addTextChangedListener(new ObservadorLimpiador() {
+        mTxtNumD.addTextChangedListener(new ObservadorLimpiador() {
             @Override
             public TextInputLayout setEditTextLayout() {
-                return layNumD;
+                return mLayNumD;
             }
         });
 
-        txtCiudadOrigen.addTextChangedListener(new ObservadorLimpiador() {
+        mTxtCiudadOrigen.addTextChangedListener(new ObservadorLimpiador() {
             @Override
             public TextInputLayout setEditTextLayout() {
-                return layCiudadOrigen;
+                return mLayCiudadOrigen;
             }
         });
 
-        txtCiudadDestino.addTextChangedListener(new ObservadorLimpiador() {
+        mTxtCiudadDestino.addTextChangedListener(new ObservadorLimpiador() {
             @Override
             public TextInputLayout setEditTextLayout() {
-                return layCiudadDestino;
+                return mLayCiudadDestino;
             }
         });
     }
@@ -127,8 +130,8 @@ public class UbicacionActivity extends BaseActivity {
 
     public void setListaCiudades(List<String> ciudades) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ciudades);
-        txtCiudadOrigen.setAdapter(adapter);
-        txtCiudadDestino.setAdapter(adapter);
+        mTxtCiudadOrigen.setAdapter(adapter);
+        mTxtCiudadDestino.setAdapter(adapter);
     }
 
     public void siguiente() {
@@ -139,38 +142,38 @@ public class UbicacionActivity extends BaseActivity {
         Direccion.Errores eOrigen = errores.getErroresOrigen();
         Direccion.Errores eDestino = errores.getErroresDestino();
 
-        layCalleO.setError(eOrigen.eCalle()
+        mLayCalleO.setError(eOrigen.eCalle()
                 ? "Debe ingresar la calle de origen. (min 5 caracteres)"
                 : "");
 
-        layCalleD.setError(eDestino.eCalle()
+        mLayCalleD.setError(eDestino.eCalle()
                 ? "Debe ingresar la calle de destino. (min 5 caracteres)"
                 : "");
 
-        layNumO.setError(eOrigen.eNumero()
+        mLayNumO.setError(eOrigen.eNumero()
                 ? "Debe ingresar el número de domicilio de origen."
                 : "");
 
-        layNumD.setError(eDestino.eNumero()
+        mLayNumD.setError(eDestino.eNumero()
                 ? "Debe ingresar número de domicilio de destino."
                 : "");
 
-        layCiudadOrigen.setError(eOrigen.eCiudad()
+        mLayCiudadOrigen.setError(eOrigen.eCiudad()
                 ? "Por favor, seleccioná la ciudad del comercio."
                 : "");
 
-        layCiudadDestino.setError(eDestino.eCiudad()
+        mLayCiudadDestino.setError(eDestino.eCiudad()
                 ? "Por favor, seleccioná la ciudad para la entrega."
                 : "");
 
         if (errores.eCiudadesDistintas()){
-            layCiudadDestino.setError("No se realizan envíos entre ciudades.");
-            layCiudadOrigen.setError("No se realizan envíos entre ciudades.");
+            mLayCiudadDestino.setError("No se realizan envíos entre ciudades.");
+            mLayCiudadOrigen.setError("No se realizan envíos entre ciudades.");
         }
 
         if (errores.eDireccionDuplicada() ){
-            layCalleO.setError("Ingresaste la misma dirección.");
-            layCalleD.setError("Ingresaste la misma dirección.");
+            mLayCalleO.setError("Ingresaste la misma dirección.");
+            mLayCalleD.setError("Ingresaste la misma dirección.");
         }
     }
 
@@ -211,22 +214,22 @@ public class UbicacionActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK)
-            control.buscarDireccion(requestCode);
+            mControl.buscarDireccion(requestCode);
     }
 
     public void esperar(boolean esperar) {
-        progress.setVisibility(esperar
+        mProgress.setVisibility(esperar
                 ? View.VISIBLE
                 : View.GONE);
-        btnSiguiente.setEnabled(!esperar);
+        mBtnSiguiente.setEnabled(!esperar);
     }
 
     public void setCiudadOrigen(String ciudad) {
-        txtCiudadOrigen.setText(ciudad, false);
+        mTxtCiudadOrigen.setText(ciudad, false);
     }
 
     public void setNumeroOrigen(int numero) {
-        txtNumO.setText(numero == 0
+        mTxtNumO.setText(numero == 0
                 ? ""
                 : String.valueOf(numero));
     }
@@ -240,11 +243,11 @@ public class UbicacionActivity extends BaseActivity {
     }
 
     public void setCiudadDestino(String ciudad) {
-        txtCiudadDestino.setText(ciudad, false);
+        mTxtCiudadDestino.setText(ciudad, false);
     }
 
     public void setNumeroDestino(int numero) {
-        txtNumD.setText(numero == 0
+        mTxtNumD.setText(numero == 0
                 ? ""
                 : String.valueOf(numero));    }
 

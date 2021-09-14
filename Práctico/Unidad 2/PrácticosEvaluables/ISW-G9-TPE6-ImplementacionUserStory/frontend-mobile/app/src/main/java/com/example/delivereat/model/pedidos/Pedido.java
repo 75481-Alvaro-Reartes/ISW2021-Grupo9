@@ -2,6 +2,9 @@ package com.example.delivereat.model.pedidos;
 
 import com.example.delivereat.model.otros.ErrorManager;
 
+/**
+ * Clase del modelo que representa el pedido a realizar.
+ */
 public class Pedido {
 
     public Pedido() {

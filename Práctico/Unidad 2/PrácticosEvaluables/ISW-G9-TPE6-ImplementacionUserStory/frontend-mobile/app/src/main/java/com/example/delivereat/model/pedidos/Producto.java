@@ -4,9 +4,12 @@ import com.example.delivereat.model.otros.ErrorManager;
 import com.example.delivereat.model.otros.Imagen;
 import com.example.delivereat.util.Constantes;
 
+/**
+ * Clase del modelo que representa los datos del producto del pedido.
+ */
 public class Producto {
 
-    private String mNombre = "papas fritas";
+    private String mNombre;
     private Imagen mImagen;
 
     public Producto() {

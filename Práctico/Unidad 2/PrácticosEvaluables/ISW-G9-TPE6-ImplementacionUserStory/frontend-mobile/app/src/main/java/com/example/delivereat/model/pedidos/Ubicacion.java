@@ -2,6 +2,9 @@ package com.example.delivereat.model.pedidos;
 
 import com.example.delivereat.model.otros.ErrorManager;
 
+/**
+ * Clase del dominio que representa una ubicación representativa del pedido.
+ */
 public class Ubicacion {
 
     private Direccion mOrigen, mDestino, mTemp;
