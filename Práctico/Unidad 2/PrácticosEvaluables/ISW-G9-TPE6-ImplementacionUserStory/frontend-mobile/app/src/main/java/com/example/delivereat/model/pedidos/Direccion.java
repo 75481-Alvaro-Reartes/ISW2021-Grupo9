@@ -9,73 +9,73 @@ import java.util.Objects;
 
 public class Direccion {
 
-    private double lat;
-    private double lng;
-    private String calle;
-    private int numero;
-    private String ciudad;
-    private String comentario;
+    private double mLat;
+    private double mLng;
+    private String mCalle;
+    private int mNumero;
+    private String mCiudad;
+    private String mComentario;
 
     public Direccion() {
     }
 
     public Direccion(String calle, int numero, String ciudad) {
-        this.calle = calle;
-        this.numero = numero;
-        this.ciudad = ciudad;
+        this.mCalle = calle;
+        this.mNumero = numero;
+        this.mCiudad = ciudad;
     }
 
     public Direccion(double lat, double lng) {
-        this.lat = lat;
-        this.lng = lng;
+        mLat = lat;
+        mLng = lng;
     }
-
+    //settes y getters
     public double getLat() {
-        return lat;
+        return mLat;
     }
 
     public double getLng() {
-        return lng;
+        return mLng;
     }
 
     public String getCalle() {
-        return calle;
+        return mCalle;
     }
 
     public void setCalle(String calle) {
-        this.calle = calle;
+        mCalle = calle;
     }
 
     public int getNumero() {
-        return numero;
+        return mNumero;
     }
 
     public void setNumero(int numero) {
-        this.numero = numero;
+        mNumero = numero;
     }
 
     public String getCiudad() {
-        return ciudad;
+        return mCiudad;
     }
 
     public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
+        mCiudad = ciudad;
     }
 
     public String getComentario() {
-        return comentario;
+        return mComentario;
     }
 
     public void setComentario(String comentario) {
-        this.comentario = comentario;
+        mComentario = comentario;
     }
 
     public void setLat(double lat) {
-        this.lat = lat;
+        mLat = lat;
     }
 
     public void setLng(double lng) {
-        this.lng = lng;
+        mLng = lng;
     }
 
     @Override
@@ -83,13 +83,15 @@ public class Direccion {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Direccion direccion = (Direccion) o;
-        return numero == direccion.numero && Objects.equals(calle, direccion.calle) && Objects.equals(ciudad, direccion.ciudad);
+        return mNumero == direccion.mNumero
+                && Objects.equals(mCalle, direccion.mCalle)
+                && Objects.equals(mCiudad, direccion.mCiudad);
     }
 
     @NonNull
     @Override
     public String toString() {
-        return calle + " " + numero + ", " + ciudad + ". " + comentario;
+        return mCalle + " " + mNumero + ", " + mCiudad + ". " + mComentario;
     }
 
     // Manejo de errores
@@ -108,15 +110,15 @@ public class Direccion {
         }
 
         public boolean eCalle() {
-            return calle.length() < Constantes.MIN_CARACTERES;
+            return mCalle.length() < Constantes.MIN_CARACTERES;
         }
 
         public boolean eNumero() {
-            return numero == 0;
+            return mNumero == 0;
         }
 
         public boolean eCiudad() {
-            return ciudad.length() < Constantes.MIN_CARACTERES;
+            return mCiudad.length() < Constantes.MIN_CARACTERES;
         }
     }
 }

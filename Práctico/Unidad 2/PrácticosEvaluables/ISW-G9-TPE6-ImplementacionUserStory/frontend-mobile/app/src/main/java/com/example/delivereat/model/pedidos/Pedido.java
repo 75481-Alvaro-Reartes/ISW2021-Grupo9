@@ -5,34 +5,34 @@ import com.example.delivereat.model.otros.ErrorManager;
 public class Pedido {
 
     public Pedido() {
-        producto = new Producto();
-        entrega = new Entrega();
-        ubicacion = new Ubicacion();
-        pago = new Pago();
+        mProducto = new Producto();
+        mEntrega = new Entrega();
+        mUbicacion = new Ubicacion();
+        mPago = new Pago();
 
     }
 
     // Atributos
-    private final Producto producto;
-    private final Pago pago;
-    private final Entrega entrega;
-    private final Ubicacion ubicacion;
+    private final Producto mProducto;
+    private final Pago mPago;
+    private final Entrega mEntrega;
+    private final Ubicacion mUbicacion;
 
     // Getters
     public Producto getProducto() {
-        return producto;
+        return mProducto;
     }
 
     public Pago getPago() {
-        return pago;
+        return mPago;
     }
 
     public Entrega getEntrega() {
-        return entrega;
+        return mEntrega;
     }
 
     public Ubicacion getUbicacion() {
-        return ubicacion;
+        return mUbicacion;
     }
 
     private final Errores errores = new Errores();
@@ -45,7 +45,8 @@ public class Pedido {
 
         @Override
         public boolean hayError() {
-            return producto.getErrores().hayError() || entrega.getErrores().hayError() || ubicacion.getErrores().hayError() || pago.getErrores().hayError();
+            return mProducto.getErrores().hayError() || mEntrega.getErrores().hayError()
+                    || mUbicacion.getErrores().hayError() || mPago.getErrores().hayError();
         }
     }
 }

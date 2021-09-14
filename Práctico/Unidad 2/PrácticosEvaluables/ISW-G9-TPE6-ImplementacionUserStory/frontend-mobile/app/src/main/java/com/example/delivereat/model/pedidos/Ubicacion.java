@@ -4,7 +4,7 @@ import com.example.delivereat.model.otros.ErrorManager;
 
 public class Ubicacion {
 
-    private Direccion origen, destino, temp;
+    private Direccion mOrigen, mDestino, mTemp;
 
     /**
      * Distancia en metros entre el origen y el destino.
@@ -12,21 +12,21 @@ public class Ubicacion {
     private int distancia;
 
     public Ubicacion() {
-        origen = new Direccion();
-        destino = new Direccion();
-        temp = new Direccion();
+        mOrigen = new Direccion();
+        mDestino = new Direccion();
+        mTemp = new Direccion();
     }
 
     public Direccion getOrigen() {
-        return origen;
+        return mOrigen;
     }
 
     public Direccion getDestino() {
-        return destino;
+        return mDestino;
     }
 
     public Direccion getTemp() {
-        return temp;
+        return mTemp;
     }
 
     public int getDistancia() {
@@ -43,33 +43,39 @@ public class Ubicacion {
         return errores;
     }
 
+    /**
+     * Setea las coordenadas del google maps en cero
+     */
     public void limpiarCoordenadas() {
-        destino.setLat(0);
-        origen.setLat(0);
-        origen.setLng(0);
-        destino.setLng(0);
+        mDestino.setLat(0);
+        mOrigen.setLat(0);
+        mOrigen.setLng(0);
+        mDestino.setLng(0);
     }
 
+    /**
+     * Clase interna con errores de ubicaciones
+     */
     public class Errores implements ErrorManager {
 
         @Override
         public boolean hayError() {
-            return origen.getErrores().hayError() || destino.getErrores().hayError() || eCiudadesDistintas() || eDireccionDuplicada();
+            return mOrigen.getErrores().hayError() || mDestino.getErrores().hayError() || eCiudadesDistintas() || eDireccionDuplicada();
         }
 
         public boolean eCiudadesDistintas() {
-            return !origen.getErrores().eCiudad() && !destino.getErrores().eCiudad() && !origen.getCiudad().equals(destino.getCiudad());
+            return !mOrigen.getErrores().eCiudad() && !mDestino.getErrores().eCiudad() && !mOrigen.getCiudad().equals(mDestino.getCiudad());
         }
 
         public boolean eDireccionDuplicada() {
-            return !origen.getErrores().eCalle() && origen.equals(destino);
+            return !mOrigen.getErrores().eCalle() && mOrigen.equals(mDestino);
         }
 
         public Direccion.Errores getErroresOrigen() {
-            return origen.getErrores();
+            return mOrigen.getErrores();
         }
         public Direccion.Errores getErroresDestino() {
-            return destino.getErrores();
+            return mDestino.getErrores();
         }
     }
 }

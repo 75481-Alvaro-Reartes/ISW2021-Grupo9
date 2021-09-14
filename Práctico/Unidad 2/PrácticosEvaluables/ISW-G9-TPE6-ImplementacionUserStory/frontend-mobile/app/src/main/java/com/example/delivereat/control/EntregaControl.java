@@ -6,32 +6,34 @@ import com.example.delivereat.ui.activities.loquesea.EntregaActivity;
 
 public class EntregaControl implements IControl {
 
-    private final EntregaActivity activity;
-    private final Pedido pedido;
+    private final EntregaActivity mActivity;
+    private final Pedido mPedido;
 
     public EntregaControl(EntregaActivity activity) {
-        this.activity = activity;
-        pedido = Datos.getInstance().getPedido();
+        mActivity = activity;
+        mPedido = Datos.getInstance().getPedido();
     }
 
+    /**
+     * Indica a la actividad que avance a la actividad de pago
+     */
     public void siguiente() {
         guardarDatos();
+        mActivity.setErrores(mPedido.getEntrega().getErrores());
 
-        activity.setErrores(pedido.getEntrega().getErrores());
-
-        if (!pedido.getEntrega().getErrores().hayError())
-            activity.siguiente();
+        if (!mPedido.getEntrega().getErrores().hayError())
+            mActivity.siguiente();
     }
 
     @Override
     public void recuperarDatos() {
-        activity.setEntregaPronto(pedido.getEntrega().isEntregaLoAntesPosible());
-        activity.setFechaEntrega(pedido.getEntrega().getEntregaProgramada());
+        mActivity.setEntregaPronto(mPedido.getEntrega().isEntregaLoAntesPosible());
+        mActivity.setFechaEntrega(mPedido.getEntrega().getEntregaProgramada());
     }
 
     @Override
     public void guardarDatos() {
-        pedido.getEntrega().setEntregaLoAntesPosible(activity.getEntregaPronto());
-        pedido.getEntrega().setEntregaProgramada(activity.getFechaHoraEntrega());
+        mPedido.getEntrega().setEntregaLoAntesPosible(mActivity.getEntregaPronto());
+        mPedido.getEntrega().setEntregaProgramada(mActivity.getFechaHoraEntrega());
     }
 }

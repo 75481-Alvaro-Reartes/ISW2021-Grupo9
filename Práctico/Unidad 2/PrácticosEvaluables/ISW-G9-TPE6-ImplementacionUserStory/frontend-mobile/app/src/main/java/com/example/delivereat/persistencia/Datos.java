@@ -13,27 +13,27 @@ public class Datos {
 
     }
 
-    private static Datos instance;
+    private static Datos mInstance;
 
     public static Datos getInstance() {
-        if (instance == null) instance = new Datos();
-        return instance;
+        if (mInstance == null) mInstance = new Datos();
+        return mInstance;
     }
 
     // Acceso a datos global
 
-    private Pedido pedido;
+    private Pedido mPedido;
 
     public void limpiar() {
-        pedido = new Pedido();
+        mPedido = new Pedido();
     }
 
     public Pedido getPedido() {
-        if (pedido == null) pedido = new Pedido();
-        return pedido;
+        if (mPedido == null) mPedido = new Pedido();
+        return mPedido;
     }
 
     public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
+        this.mPedido = pedido;
     }
 }

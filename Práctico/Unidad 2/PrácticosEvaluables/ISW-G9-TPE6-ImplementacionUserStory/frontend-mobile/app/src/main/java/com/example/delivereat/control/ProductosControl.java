@@ -6,30 +6,33 @@ import com.example.delivereat.ui.activities.loquesea.ProductosActivity;
 
 public class ProductosControl implements IControl{
 
-    private final ProductosActivity activity;
-    private final Pedido pedido;
+    private final ProductosActivity mActivity;
+    private final Pedido mPedido;
 
     public ProductosControl(ProductosActivity activity) {
-        this.activity = activity;
-        pedido = Datos.getInstance().getPedido();
+        mActivity = activity;
+        mPedido = Datos.getInstance().getPedido();
     }
 
     public void clickSiguiente() {
         guardarDatos();
         
-        activity.setErrores(pedido.getProducto().getErrores());
+        mActivity.setErrores(mPedido.getProducto().getErrores());
 
-        if (!pedido.getProducto().getErrores().hayError()) activity.siguiente();
+        if (!mPedido.getProducto().getErrores().hayError()) mActivity.siguiente();
     }
 
     @Override
     public void recuperarDatos() {
-        activity.setProducto(pedido.getProducto().getNombre());
-        activity.mostrarImagen(pedido.getProducto().getImagen());
+        mActivity.setProducto(mPedido.getProducto().getNombre());
+        mActivity.mostrarImagen(mPedido.getProducto().getImagen());
     }
 
+    /**
+     * guarda los datos de la actividada en la clase de persistencia
+     */
     public void guardarDatos() {
-        pedido.getProducto().setNombre(activity.getProducto());
-        pedido.getProducto().setImagen(activity.getImagen());
+        mPedido.getProducto().setNombre(mActivity.getProducto());
+        mPedido.getProducto().setImagen(mActivity.getImagen());
     }
 }

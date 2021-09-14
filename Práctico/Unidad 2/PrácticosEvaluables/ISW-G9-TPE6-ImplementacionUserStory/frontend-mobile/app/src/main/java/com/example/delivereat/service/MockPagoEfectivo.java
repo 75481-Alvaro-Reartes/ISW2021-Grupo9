@@ -6,12 +6,15 @@ import com.example.delivereat.model.pedidos.Pago;
 import com.example.delivereat.ui.activities.loquesea.IObserverPago;
 import com.example.delivereat.util.Constantes;
 
+/**
+ * Clase que imita el comportamiento de forma controlada de un pago en efectivo
+ */
 public class MockPagoEfectivo implements IClientePagoPedido {
-    private IObserverPago observer;
+    private IObserverPago mObserver;
 
     @Override
     public IClientePagoPedido setObserver(IObserverPago observer) {
-        this.observer = observer;
+        mObserver = observer;
         return this;
     }
 
@@ -21,7 +24,7 @@ public class MockPagoEfectivo implements IClientePagoPedido {
         // VisaInterface.validateTarjetacion(pagoTarjeta); xdd
         new Handler().postDelayed(() -> {
             // wow, salió bien! :D
-            observer.tarjetaValida(true);
+            mObserver.tarjetaValida(true);
 
         }, Constantes.MILIS_ESPERA_EFECTIVO);
     }

@@ -9,26 +9,26 @@ import java.util.Calendar;
 
 public class Entrega {
 
-    private Calendar entregaProgramada;
-    private boolean entregaLoAntesPosible = true;
+    private Calendar mEntregaProgramada;
+    private boolean mEntregaLoAntesPosible = true;
 
     public Entrega() {
     }
 
     public Calendar getEntregaProgramada() {
-        return entregaProgramada;
+        return mEntregaProgramada;
     }
 
     public void setEntregaProgramada(Calendar entregaProgramada) {
-        this.entregaProgramada = entregaProgramada;
+        mEntregaProgramada = entregaProgramada;
     }
 
     public boolean isEntregaLoAntesPosible() {
-        return entregaLoAntesPosible;
+        return mEntregaLoAntesPosible;
     }
 
     public void setEntregaLoAntesPosible(boolean entregaLoAntesPosible) {
-        this.entregaLoAntesPosible = entregaLoAntesPosible;
+        mEntregaLoAntesPosible = entregaLoAntesPosible;
     }
 
     private final Errores errores = new Errores();
@@ -37,15 +37,22 @@ public class Entrega {
         return errores;
     }
 
+    /**
+     * avisa por pantalla con el momento de llegada del producto con su mes hora y minutos
+     * @return
+     */
     public String cuandoLlega() {
-        return entregaLoAntesPosible
+        return mEntregaLoAntesPosible
                 ? "Llegará lo antes posible"
-                : "Llegará el " + entregaProgramada.get(Calendar.DATE) + " de "
-                + Constantes.MESES[entregaProgramada.get(Calendar.MONTH)] + " a las " +
-                entregaProgramada.get(Calendar.HOUR_OF_DAY) + ":" +
-                entregaProgramada.get(Calendar.MINUTE) + " horas.";
+                : "Llegará el " + mEntregaProgramada.get(Calendar.DATE) + " de "
+                + Constantes.MESES[mEntregaProgramada.get(Calendar.MONTH)] + " a las " +
+                mEntregaProgramada.get(Calendar.HOUR_OF_DAY) + ":" +
+                mEntregaProgramada.get(Calendar.MINUTE) + " horas.";
     }
 
+    /**
+     * Clase interna con errores posibles de la clase entrega
+     */
     public class Errores implements ErrorManager {
 
         @Override
@@ -54,24 +61,24 @@ public class Entrega {
         }
 
         public boolean eFechaRequerida() {
-            return !entregaLoAntesPosible && entregaProgramada == null;
+            return !mEntregaLoAntesPosible && mEntregaProgramada == null;
         }
 
         public boolean eFechaMinima() {
             Calendar minDate = Calendar.getInstance();
             minDate.add(Calendar.HOUR_OF_DAY, MIN_HORA_ENTREGA);
 
-            return !entregaLoAntesPosible && entregaProgramada != null
-                    && minDate.getTime().after(entregaProgramada.getTime());
+            return !mEntregaLoAntesPosible && mEntregaProgramada != null
+                    && minDate.getTime().after(mEntregaProgramada.getTime());
         }
 
         public boolean eRangoHoras() {
-            return !entregaLoAntesPosible &&
+            return !mEntregaLoAntesPosible &&
                     !eFechaRequerida() && !eFechaMinima()
                     && (
-                            entregaProgramada.get(Calendar.HOUR_OF_DAY) < Constantes.HORA_HABIL_MIN
-                                    || (entregaProgramada.get(Calendar.HOUR_OF_DAY) == 23
-                                    && entregaProgramada.get(Calendar.MINUTE) == 59));
+                            mEntregaProgramada.get(Calendar.HOUR_OF_DAY) < Constantes.HORA_HABIL_MIN
+                                    || (mEntregaProgramada.get(Calendar.HOUR_OF_DAY) == 23
+                                    && mEntregaProgramada.get(Calendar.MINUTE) == 59));
         }
     }
 }

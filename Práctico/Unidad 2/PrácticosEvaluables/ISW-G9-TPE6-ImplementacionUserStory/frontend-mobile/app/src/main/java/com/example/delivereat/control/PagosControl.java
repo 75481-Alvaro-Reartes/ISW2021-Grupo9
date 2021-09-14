@@ -8,51 +8,57 @@ import com.example.delivereat.util.Constantes;
 
 public class PagosControl implements IControl {
 
-    private final PagosActivity activity;
-    private final Pedido pedido;
+    private final PagosActivity mActivity;
+    private final Pedido mPedido;
 
     public PagosControl(PagosActivity activity) {
-        this.activity = activity;
-        pedido = Datos.getInstance().getPedido();
+        this.mActivity = activity;
+        mPedido = Datos.getInstance().getPedido();
     }
-
+    /**
+     * Indica a la actividad que avance a la actividad de pago
+     */
     public void siguiente() {
         guardarDatos();
 
-        activity.setErrores(pedido.getPago().getErrores());
+        mActivity.setErrores(mPedido.getPago().getErrores());
 
-        if (!pedido.getPago().getErrores().hayError()) {
-            activity.siguiente();
+        if (!mPedido.getPago().getErrores().hayError()) {
+            mActivity.siguiente();
         }
     }
 
     @Override
     public void recuperarDatos() {
-        Pago pago = pedido.getPago();
+        Pago pago = mPedido.getPago();
 
-        activity.setTitular(pago.getTitular());
-        activity.setTarjeta(pago.getTarjeta());
-        activity.setCVC(pago.getCvc());
-        activity.setMes(pago.getMesVto());
-        activity.setYear(pago.getYearVto());
-        activity.setMonto(pago.getMonto());
-        activity.setMetodoPago(pago.getMetodoPago());
+        mActivity.setTitular(pago.getTitular());
+        mActivity.setTarjeta(pago.getTarjeta());
+        mActivity.setCVC(pago.getCvc());
+        mActivity.setMes(pago.getMesVto());
+        mActivity.setYear(pago.getYearVto());
+        mActivity.setMonto(pago.getMonto());
+        mActivity.setMetodoPago(pago.getMetodoPago());
     }
 
     @Override
     public void guardarDatos() {
-        Pago pago = pedido.getPago();
+        Pago pago = mPedido.getPago();
 
-        pago.setTitular(activity.getTitular());
-        pago.setTarjeta(activity.getTarjeta());
-        pago.setCvc(activity.getCVC());
-        pago.setMesVto(activity.getMes());
-        pago.setYearVto(activity.getYear());
-        pago.setMonto(activity.getMonto());
-        pago.setMetodoPago(activity.getMetodoPago());
+        pago.setTitular(mActivity.getTitular());
+        pago.setTarjeta(mActivity.getTarjeta());
+        pago.setCvc(mActivity.getCVC());
+        pago.setMesVto(mActivity.getMes());
+        pago.setYearVto(mActivity.getYear());
+        pago.setMonto(mActivity.getMonto());
+        pago.setMetodoPago(mActivity.getMetodoPago());
     }
 
+    /**
+     * Devuele el monto del pago en formato string
+     * @return
+     */
     public String getMonto() {
-        return "$ " + pedido.getPago().getMontoPedido();
+        return "$ " + mPedido.getPago().getMontoPedido();
     }
 }

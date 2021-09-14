@@ -13,12 +13,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+/**
+ * Clase que hace el pedio al web service de google maps de las rutas entre dos puntos
+ */
 public class ClienteApiRutas extends AsyncTask<Direccion, Void, String> {
 
-    private final UbicacionControl control;
+    private final UbicacionControl mControl;
 
     public ClienteApiRutas(UbicacionControl control) {
-        this.control = control;
+        mControl = control;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class ClienteApiRutas extends AsyncTask<Direccion, Void, String> {
     @Override
     protected void onPostExecute(String body) {
         if (body == null || body.isEmpty()) {
-            control.recibirResultadoRuta(0);
+            mControl.recibirResultadoRuta(0);
             return;
         }
 
@@ -71,11 +74,11 @@ public class ClienteApiRutas extends AsyncTask<Direccion, Void, String> {
                     .getJSONObject("distance")
                     .getInt("value");
 
-            control.recibirResultadoRuta(distancia);
+            mControl.recibirResultadoRuta(distancia);
 
         } catch (Exception e) {
             e.printStackTrace();
-            control.recibirResultadoRuta(0);
+            mControl.recibirResultadoRuta(0);
         }
     }
 }

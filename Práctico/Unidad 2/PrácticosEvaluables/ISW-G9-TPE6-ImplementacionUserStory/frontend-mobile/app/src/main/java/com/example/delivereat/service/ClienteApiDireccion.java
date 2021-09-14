@@ -15,20 +15,28 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+/**
+ * Clase que hace llamdas asincronas al web service de google maps
+ */
 public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
 
-    private final UbicacionControl control;
-    private Direccion direccion;
+    private final UbicacionControl mControl;
+    private Direccion mDireccion;
 
     public ClienteApiDireccion(UbicacionControl control) {
-        this.control = control;
+        mControl = control;
     }
 
+    /**
+     * Hace el pedido al web service de google maps
+     * @param direcciones
+     * @return
+     */
     @Override
     protected String doInBackground(Direccion... direcciones) {
         InputStream inputStream;
         StringBuilder resultado = new StringBuilder();
-        direccion = direcciones[0];
+        mDireccion = direcciones[0];
 
         try {
             inputStream = new URL(
@@ -57,10 +65,14 @@ public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
         return resultado.toString();
     }
 
+    /**
+     * Procesa el resultado y hace el mapeo de objetos en Json y se lo devuelve a la clase de control
+     * @param body
+     */
     @Override
     protected void onPostExecute(String body) {
         if (body == null || body.isEmpty()) {
-            control.recibirResultadoDireccion(null);
+            mControl.recibirResultadoDireccion(null);
             return;
         }
 
@@ -69,22 +81,22 @@ public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
 
             JSONArray resultado = json.getJSONArray("results").getJSONObject(0).getJSONArray("address_components");
 
-            direccion.setNumero(Integer.parseInt(resultado.getJSONObject(0).getString("long_name")));
-            direccion.setCalle(resultado.getJSONObject(1).getString("long_name"));
+            mDireccion.setNumero(Integer.parseInt(resultado.getJSONObject(0).getString("long_name")));
+            mDireccion.setCalle(resultado.getJSONObject(1).getString("long_name"));
             String ciudad = resultado.getJSONObject(2).getString("long_name");
             if (ciudad.length() == 3)
                 ciudad = resultado.getJSONObject(3).getString("long_name");
-            direccion.setCiudad(ciudad);
+            mDireccion.setCiudad(ciudad);
 
 
             // Maps le llama indistintamente Córdoba o Capital, lo dejo siempre en Córdoba
-            if (direccion.getCiudad().equals("Capital")) direccion.setCiudad("Córdoba");
+            if (mDireccion.getCiudad().equals("Capital")) mDireccion.setCiudad("Córdoba");
 
-            control.recibirResultadoDireccion(direccion);
+            mControl.recibirResultadoDireccion(mDireccion);
 
         } catch (Exception e) {
             e.printStackTrace();
-            control.recibirResultadoDireccion(null);
+            mControl.recibirResultadoDireccion(null);
         }
     }
 }

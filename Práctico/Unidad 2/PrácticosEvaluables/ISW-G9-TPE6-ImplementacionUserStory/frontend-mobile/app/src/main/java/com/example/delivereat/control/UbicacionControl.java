@@ -16,83 +16,83 @@ import java.util.List;
 
 public class UbicacionControl implements IControl {
 
-    private final UbicacionActivity activity;
-    private int codigoUbicacion;
-    private List<String> ciudades;
-    private final Pedido pedido;
+    private final UbicacionActivity mActivity;
+    private int mCodigoUbicacion;
+    private List<String> mCiudades;
+    private final Pedido mPedido;
 
     public UbicacionControl(UbicacionActivity activity) {
-        this.activity = activity;
-        pedido = Datos.getInstance().getPedido();
+        this.mActivity = activity;
+        mPedido = Datos.getInstance().getPedido();
     }
 
     public void iniciarCiudades() {
-        ciudades = (Arrays.asList(activity.getResources().getStringArray(R.array.ciudades)));
-        activity.setListaCiudades(ciudades);
+        mCiudades = (Arrays.asList(mActivity.getResources().getStringArray(R.array.ciudades)));
+        mActivity.setListaCiudades(mCiudades);
     }
 
     public void siguiente() {
         guardarDatos();
 
-        activity.setErrores(pedido.getUbicacion().getErrores());
+        mActivity.setErrores(mPedido.getUbicacion().getErrores());
 
-        if (!pedido.getUbicacion().getErrores().hayError()){
-            activity.esperar(true);
+        if (!mPedido.getUbicacion().getErrores().hayError()){
+            mActivity.esperar(true);
             new ClienteApiRutas(this)
-                    .execute(pedido.getUbicacion().getOrigen(), pedido.getUbicacion().getDestino());
-            //activity.siguiente();
+                    .execute(mPedido.getUbicacion().getOrigen(), mPedido.getUbicacion().getDestino());
+
         }
     }
 
     @Override
     public void recuperarDatos() {
-        Direccion origen = pedido.getUbicacion().getOrigen();
-        activity.setCalleOrigen(origen.getCalle());
-        activity.setNumeroOrigen(origen.getNumero());
-        activity.setCiudadOrigen(origen.getCiudad());
-        activity.setComentarioOrigen(origen.getComentario());
+        Direccion origen = mPedido.getUbicacion().getOrigen();
+        mActivity.setCalleOrigen(origen.getCalle());
+        mActivity.setNumeroOrigen(origen.getNumero());
+        mActivity.setCiudadOrigen(origen.getCiudad());
+        mActivity.setComentarioOrigen(origen.getComentario());
 
-        Direccion destino = pedido.getUbicacion().getDestino();
-        activity.setCalleDestino(destino.getCalle());
-        activity.setNumeroDestino(destino.getNumero());
-        activity.setCiudadDestino(destino.getCiudad());
-        activity.setComentarioDestino(destino.getComentario());
+        Direccion destino = mPedido.getUbicacion().getDestino();
+        mActivity.setCalleDestino(destino.getCalle());
+        mActivity.setNumeroDestino(destino.getNumero());
+        mActivity.setCiudadDestino(destino.getCiudad());
+        mActivity.setComentarioDestino(destino.getComentario());
     }
 
     @Override
     public void guardarDatos() {
-        Direccion origen = pedido.getUbicacion().getOrigen();
-        origen.setCalle(activity.getCalleOrigen());
-        origen.setNumero(activity.getNumeroOrigen());
-        origen.setCiudad(activity.getCiudadOrigen());
-        origen.setComentario(activity.getComentarioOrigen());
+        Direccion origen = mPedido.getUbicacion().getOrigen();
+        origen.setCalle(mActivity.getCalleOrigen());
+        origen.setNumero(mActivity.getNumeroOrigen());
+        origen.setCiudad(mActivity.getCiudadOrigen());
+        origen.setComentario(mActivity.getComentarioOrigen());
 
-        Direccion destino = pedido.getUbicacion().getDestino();
-        destino.setCalle(activity.getCalleDestino());
-        destino.setNumero(activity.getNumeroDestino());
-        destino.setCiudad(activity.getCiudadDestino());
-        destino.setComentario(activity.getComentarioDestino());
+        Direccion destino = mPedido.getUbicacion().getDestino();
+        destino.setCalle(mActivity.getCalleDestino());
+        destino.setNumero(mActivity.getNumeroDestino());
+        destino.setCiudad(mActivity.getCiudadDestino());
+        destino.setComentario(mActivity.getComentarioDestino());
     }
 
     public void buscarDireccion(int codigo) {
-        codigoUbicacion = codigo;
+        mCodigoUbicacion = codigo;
 
-        activity.esperar(true);
-        new ClienteApiDireccion(this).execute(pedido.getUbicacion().getTemp());
+        mActivity.esperar(true);
+        new ClienteApiDireccion(this).execute(mPedido.getUbicacion().getTemp());
     }
 
     public void recibirResultadoDireccion(@Nullable Direccion resultado) {
-        activity.esperar(false);
+        mActivity.esperar(false);
 
         if (resultado == null) {
-            activity.toast("Ocurrió un error al buscar la dirección.");
+            mActivity.toast("Ocurrió un error al buscar la dirección.");
             return;
         }
 
-        if (ciudades.contains(resultado.getCiudad())){
-            Direccion d = codigoUbicacion == Constantes.UBICACION_ORIGEN
-                    ? pedido.getUbicacion().getOrigen()
-                    : pedido.getUbicacion().getDestino();
+        if (mCiudades.contains(resultado.getCiudad())){
+            Direccion d = mCodigoUbicacion == Constantes.UBICACION_ORIGEN
+                    ? mPedido.getUbicacion().getOrigen()
+                    : mPedido.getUbicacion().getDestino();
 
             d.setCalle(resultado.getCalle());
             d.setNumero(resultado.getNumero());
@@ -104,18 +104,18 @@ public class UbicacionControl implements IControl {
             recuperarDatos();
         }
         else {
-            activity.toast("Disculpá, todavía no trabajamos en " + resultado.getCiudad());
+            mActivity.toast("Disculpá, todavía no trabajamos en " + resultado.getCiudad());
         }
     }
 
     public void recibirResultadoRuta(int distancia) {
-        activity.esperar(false);
-        pedido.getUbicacion().setDistancia(distancia);
-        pedido.getPago().calcularMonto(distancia);
-        activity.siguiente();
+        mActivity.esperar(false);
+        mPedido.getUbicacion().setDistancia(distancia);
+        mPedido.getPago().calcularMonto(distancia);
+        mActivity.siguiente();
     }
 
     public void direccionModificada() {
-        pedido.getUbicacion().limpiarCoordenadas();
+        mPedido.getUbicacion().limpiarCoordenadas();
     }
 }

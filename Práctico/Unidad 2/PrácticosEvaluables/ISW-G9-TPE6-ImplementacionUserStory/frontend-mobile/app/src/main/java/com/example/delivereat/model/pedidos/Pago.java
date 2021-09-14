@@ -8,13 +8,13 @@ import com.example.delivereat.util.Constantes;
 import java.util.Calendar;
 
 public class Pago {
-    private double monto;
-    private String titular;
-    private long tarjeta;
-    private int cvc;
-    private int mesVto = -1;
-    private int yearVto;
-    private int montoPedido;
+    private double mMonto;
+    private String mTitular;
+    private long mTarjeta;
+    private int mCvc;
+    private int mMesVto = -1;
+    private int mYearVto;
+    private int mMontoPedido;
 
     private MetodoPago mMetodoPago = MetodoPago.Tarjeta;
 
@@ -24,11 +24,11 @@ public class Pago {
     @NonNull
     @Override
     public String toString() {
-        return  "Costo:    $ " + montoPedido + "\n" +
+        return  "Costo:    $ " + mMontoPedido + "\n" +
                 (
                         esTarjeta()
-                                ? "Tarjeta Visa **** " + String.valueOf(tarjeta).substring(12)
-                                : "Efectivo:  $" + (int) monto
+                                ? "Tarjeta Visa **** " + String.valueOf(mTarjeta).substring(12)
+                                : "Efectivo:  $" + (int) mMonto
                 );
     }
 
@@ -45,59 +45,58 @@ public class Pago {
     }
 
     public double getMonto() {
-        return monto;
+        return mMonto;
     }
 
     public void setMonto(double monto) {
-        this.monto = monto;
+        mMonto = monto;
     }
 
     public String getTitular() {
-        return titular;
+        return mTitular;
     }
 
     public void setTitular(String titular) {
-        this.titular = titular;
+        mTitular = titular;
     }
 
     public long getTarjeta() {
-        return tarjeta;
+        return mTarjeta;
     }
 
     public void setTarjeta(long tarjeta) {
-        this.tarjeta = tarjeta;
+        mTarjeta = tarjeta;
     }
 
     public int getCvc() {
-        return cvc;
+        return mCvc;
     }
 
     public void setCvc(int cvc) {
-        this.cvc = cvc;
+        mCvc = cvc;
     }
 
     public int getMesVto() {
-        return mesVto;
+        return mMesVto;
     }
 
-    public void setMesVto(int mesVto) {
-        this.mesVto = mesVto;
+    public void setMesVto(int mesVto) { mMesVto = mesVto;
     }
 
     public int getYearVto() {
-        return yearVto;
+        return mYearVto;
     }
 
     public void setYearVto(int yearVto) {
-        this.yearVto = yearVto;
+        mYearVto = yearVto;
     }
 
     public int getMontoPedido() {
-        return montoPedido;
+        return mMontoPedido;
     }
 
     public void setMontoPedido(int montoPedido) {
-        this.montoPedido = montoPedido;
+        mMontoPedido = montoPedido;
     }
 
     private final Errores errores = new Errores();
@@ -111,42 +110,43 @@ public class Pago {
     }
 
     public void calcularMonto(int distancia) {
-        montoPedido = (int) (Constantes.MONTO_POR_500_METROS *  Math.ceil(distancia/ 500d));
+        mMontoPedido = (int) (Constantes.MONTO_POR_500_METROS *  Math.ceil(distancia/ 500d));
     }
 
     public class Errores implements ErrorManager {
 
         @Override
         public boolean hayError() {
-            return eLargoTarjeta() || eCVC() || eTitular() || eMes() || eYear() || eMonto() || eTarjetaNoVisa() || eTarjetaVencida();
+            return eLargoTarjeta() || eCVC() || eTitular() || eMes() || eYear()
+                    || eMonto() || eTarjetaNoVisa() || eTarjetaVencida();
         }
 
         public boolean eLargoTarjeta() {
-            return esTarjeta() && String.valueOf(tarjeta).length() != 16;
+            return esTarjeta() && String.valueOf(mTarjeta).length() != 16;
         }
 
         public boolean eCVC() {
-            return esTarjeta() && String.valueOf(cvc).length() != 3;
+            return esTarjeta() && String.valueOf(mCvc).length() != 3;
         }
 
         public boolean eTitular() {
-            return esTarjeta() && titular.length() < Constantes.MIN_CARACTERES;
+            return esTarjeta() && mTitular.length() < Constantes.MIN_CARACTERES;
         }
 
         public boolean eMes() {
-            return esTarjeta() && mesVto == -1;
+            return esTarjeta() && mMesVto == -1;
         }
 
         public boolean eYear() {
-            return esTarjeta() && yearVto == 0;
+            return esTarjeta() && mYearVto == 0;
         }
 
         public boolean eMonto() {
-            return !esTarjeta() && monto < montoPedido;
+            return !esTarjeta() && mMonto < mMontoPedido;
         }
 
         public boolean eTarjetaNoVisa() {
-            return esTarjeta() && !eLargoTarjeta() && String.valueOf(tarjeta).charAt(0) != '4';
+            return esTarjeta() && !eLargoTarjeta() && String.valueOf(mTarjeta).charAt(0) != '4';
         }
 
         public boolean eTarjetaVencida() {
@@ -154,7 +154,10 @@ public class Pago {
             Calendar calendar = Calendar.getInstance();
             mesActual = calendar.get(Calendar.MONTH);
             yearActual = calendar.get(Calendar.YEAR);
-            return esTarjeta() && !eMes() && !eYear() && yearActual == yearVto && mesActual > mesVto;
+            return esTarjeta()
+                    && !eMes() && !eYear()
+                    && yearActual == mYearVto
+                    && mesActual > mMesVto;
         }
     }
 }

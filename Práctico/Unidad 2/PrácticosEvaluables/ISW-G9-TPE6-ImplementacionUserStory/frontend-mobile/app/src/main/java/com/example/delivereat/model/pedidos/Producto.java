@@ -6,26 +6,26 @@ import com.example.delivereat.util.Constantes;
 
 public class Producto {
 
-    private String nombre = "papas fritas";
-    private Imagen imagen;
+    private String mNombre = "papas fritas";
+    private Imagen mImagen;
 
     public Producto() {
     }
 
     public String getNombre() {
-        return nombre;
+        return mNombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        mNombre = nombre;
     }
 
     public Imagen getImagen() {
-        return imagen;
+        return mImagen;
     }
 
     public void setImagen(Imagen imagen) {
-        this.imagen = imagen;
+        mImagen = imagen;
     }
 
     private final Errores errores = new Errores();
@@ -42,7 +42,7 @@ public class Producto {
         }
 
         public boolean eRequerido() {
-            return nombre.length() < Constantes.MIN_CARACTERES;
+            return mNombre.length() < Constantes.MIN_CARACTERES;
         }
     }
 }

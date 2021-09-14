@@ -11,15 +11,18 @@ import com.example.delivereat.ui.activities.loquesea.IObserverPago;
 
 public class ConfirmarControl implements IObserverPago, IControl {
 
-    private ConfirmarActivity activity;
-    private IClientePagoPedido pagos;
-    private Pedido pedido;
+    private ConfirmarActivity mActivity;
+    private IClientePagoPedido mPagos;
+    private Pedido mPedido;
 
     public ConfirmarControl(ConfirmarActivity activity) {
-        this.activity = activity;
-        pedido = Datos.getInstance().getPedido();
+        mActivity = activity;
+        mPedido = Datos.getInstance().getPedido();
     }
 
+    /**
+     * Metodo que confirma un pedido sin errores y si los tiene avisa
+     */
     public void confirmar() {
         if (pedido.getErrores().hayError()){
             activity.setError(true);
@@ -37,6 +40,10 @@ public class ConfirmarControl implements IObserverPago, IControl {
         pagos.validar(new Pago());
     }
 
+    /**
+     * se conecta con la API de VISA y valida su resultado de si esta vigente o no
+     * @param valida indica si la tarjeta pertenece a una tarjeta VISA
+     */
     @Override
     public void tarjetaValida(boolean valida) {
         activity.esperar(false);
