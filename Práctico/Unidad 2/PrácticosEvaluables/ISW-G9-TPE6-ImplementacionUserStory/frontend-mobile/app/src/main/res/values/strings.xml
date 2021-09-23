@@ -3,41 +3,10 @@
     <string name="title_activity_maps">MapsActivity</string>
 
     <string-array name="ciudades">
-        <item>Almafuerte</item>
-        <item>Alta Gracia</item>
-        <item>Arroyito</item>
-        <item>Bell Ville</item>
-        <item>Colonia Caroya</item>
         <item>Córdoba</item>
-        <item>Coronel Moldes</item>
-        <item>Corral de Bustos</item>
-        <item>Cosquín</item>
-        <item>Cruz del Eje</item>
-        <item>Dean Funes</item>
-        <item>General Cabrera</item>
-        <item>Hernando</item>
-        <item>Huinca Renancó</item>
-        <item>Jesús María</item>
-        <item>Laboulaye</item>
-        <item>La Calera</item>
-        <item>La Falda</item>
-        <item>Las Varillas</item>
-        <item>Leones</item>
-        <item>Marcos Juárez</item>
-        <item>Morteros</item>
-        <item>Oliva</item>
-        <item>Oncativo</item>
-        <item>Río Ceballos</item>
-        <item>Río Cuarto</item>
-        <item>Río Segundo</item>
-        <item>Río Tercero</item>
-        <item>San Francisco</item>
-        <item>Unquillo</item>
-        <item>Villa Allende</item>
+        <item>Río Primero</item>
         <item>Villa Carlos Paz</item>
-        <item>Villa del Rosario</item>
-        <item>Villa Dolores</item>
-        <item>Villa María</item>
-        <item>Villa Nueva</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

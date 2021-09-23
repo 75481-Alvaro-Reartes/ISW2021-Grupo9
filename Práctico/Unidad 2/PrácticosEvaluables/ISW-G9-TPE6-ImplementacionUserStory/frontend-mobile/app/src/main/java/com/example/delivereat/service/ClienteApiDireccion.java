@@ -4,7 +4,8 @@ package com.example.delivereat.service;
 import android.os.AsyncTask;
 
 import com.example.delivereat.control.UbicacionControl;
-import com.example.delivereat.model.Direccion;
+import com.example.delivereat.model.pedidos.Direccion;
+import com.example.delivereat.util.Constantes;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,24 +15,35 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+/**
+ * Clase que hace llamdas asincronas al web service de google maps
+ */
 public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
 
-    private static final String KEYCODE = "AIzaSyB9Uuk4x2uMaCjul3jdbFFC8TTN57CD6D4";
-    private UbicacionControl control;
-    private Direccion direccion;
+    private final UbicacionControl mControl;
+    private Direccion mDireccion;
 
     public ClienteApiDireccion(UbicacionControl control) {
-        this.control = control;
+        mControl = control;
     }
 
+    /**
+     * Hace el pedido al web service de google maps
+     * @param direcciones
+     * @return
+     */
     @Override
     protected String doInBackground(Direccion... direcciones) {
         InputStream inputStream;
         StringBuilder resultado = new StringBuilder();
-        direccion = direcciones[0];
+        mDireccion = direcciones[0];
 
         try {
-            inputStream = new URL("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + direcciones[0].getLat() + "," + direcciones[0].getLng() + "&key=" + KEYCODE).openStream();
+            inputStream = new URL(
+                    Constantes.MAPS_API_URL + "geocode/json?latlng=" +
+                            direcciones[0].getLat() + "," + direcciones[0].getLng() +
+                            "&key=" + Constantes.KEYCODE)
+                    .openStream();
 
             if (inputStream != null) {
 
@@ -42,6 +54,7 @@ public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
                     resultado.append(linea);
                 }
             }
+            assert inputStream != null;
             inputStream.close();
 
         } catch (Exception e){
@@ -52,10 +65,14 @@ public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
         return resultado.toString();
     }
 
+    /**
+     * Procesa el resultado y hace el mapeo de objetos en Json y se lo devuelve a la clase de control
+     * @param body
+     */
     @Override
     protected void onPostExecute(String body) {
         if (body == null || body.isEmpty()) {
-            mostrarError();
+            mControl.recibirResultadoDireccion(null);
             return;
         }
 
@@ -64,19 +81,22 @@ public class ClienteApiDireccion extends AsyncTask<Direccion, Void, String> {
 
             JSONArray resultado = json.getJSONArray("results").getJSONObject(0).getJSONArray("address_components");
 
-            direccion.setNumero(resultado.getJSONObject(0).getString("long_name"));
-            direccion.setCalle(resultado.getJSONObject(1).getString("long_name"));
-            direccion.setCiudad(resultado.getJSONObject(2).getString("long_name"));
+            mDireccion.setNumero(Integer.parseInt(resultado.getJSONObject(0).getString("long_name")));
+            mDireccion.setCalle(resultado.getJSONObject(1).getString("long_name"));
+            String ciudad = resultado.getJSONObject(2).getString("long_name");
+            if (ciudad.length() == 3)
+                ciudad = resultado.getJSONObject(3).getString("long_name");
+            mDireccion.setCiudad(ciudad);
 
-            control.setDireccion(direccion);
+
+            // Maps le llama indistintamente Córdoba o Capital, lo dejo siempre en Córdoba
+            if (mDireccion.getCiudad().equals("Capital")) mDireccion.setCiudad("Córdoba");
+
+            mControl.recibirResultadoDireccion(mDireccion);
 
         } catch (Exception e) {
             e.printStackTrace();
-            mostrarError();
+            mControl.recibirResultadoDireccion(null);
         }
-    }
-
-    private void mostrarError() {
-        control.mostrarError("Ocurrió un error al cargar la dirección.");
     }
 }

@@ -1,56 +1,64 @@
 package com.example.delivereat.control;
 
-import com.example.delivereat.model.MetodoPago;
-import com.example.delivereat.model.PagoTarjeta;
-import com.example.delivereat.model.Pedido;
-import com.example.delivereat.service.ClientePagoVisa;
-import com.example.delivereat.service.MockPagos;
-import com.example.delivereat.ui.PagosActivity;
+import com.example.delivereat.model.pedidos.Pago;
+import com.example.delivereat.model.pedidos.Pedido;
+import com.example.delivereat.persistencia.Datos;
+import com.example.delivereat.ui.activities.loquesea.PagosActivity;
+import com.example.delivereat.util.Constantes;
 
-public class PagosControl {
+public class PagosControl implements IControl {
 
-    private final PagosActivity activity;
-    private ClientePagoVisa pagoVisa;
+    private final PagosActivity mActivity;
+    private final Pedido mPedido;
 
     public PagosControl(PagosActivity activity) {
-        this.activity = activity;
-        pagoVisa = new MockPagos().setObserver(this);
+        this.mActivity = activity;
+        mPedido = Datos.getInstance().getPedido();
     }
-
+    /**
+     * Indica a la actividad que avance a la actividad de pago
+     */
     public void siguiente() {
-        Pedido p = Pedido.getInstance();
+        guardarDatos();
 
-        MetodoPago metodoPago = activity.getMetodoPago();
-        String titular = activity.getTitular();
-        long tarjeta = activity.getTarjeta();
-        int cvc = activity.getCVC();
-        int mes = activity.getMes();
-        int year = activity.getYear();
-        double monto = activity.getMonto();
+        mActivity.setErrores(mPedido.getPago().getErrores());
 
-        p.setMetodoPago(metodoPago);
-        p.setTitular(titular);
-        p.setTarjeta(tarjeta);
-        p.setCvc(cvc);
-        p.setMesVto(mes);
-        p.setYearVto(year);
-        p.setMonto(monto);
-
-        activity.setErrores(p.errores);
-
-        if (!p.errores.errorFormPagos()) {
-            if (metodoPago == MetodoPago.Tarjeta) {
-                activity.esperar(true);
-                pagoVisa.validar(new PagoTarjeta(titular, tarjeta, cvc, mes, year));
-            }
-            else
-                activity.siguiente();
+        if (!mPedido.getPago().getErrores().hayError()) {
+            mActivity.siguiente();
         }
     }
 
-    public void tarjetaValida(boolean valida) {
-        activity.esperar(false);
-        if (valida) activity.siguiente();
-        else activity.toast("No se pudo verificar la tarjeta.");
+    @Override
+    public void recuperarDatos() {
+        Pago pago = mPedido.getPago();
+
+        mActivity.setTitular(pago.getTitular());
+        mActivity.setTarjeta(pago.getTarjeta());
+        mActivity.setCVC(pago.getCvc());
+        mActivity.setMes(pago.getMesVto());
+        mActivity.setYear(pago.getYearVto());
+        mActivity.setMonto(pago.getMonto());
+        mActivity.setMetodoPago(pago.getMetodoPago());
+    }
+
+    @Override
+    public void guardarDatos() {
+        Pago pago = mPedido.getPago();
+
+        pago.setTitular(mActivity.getTitular());
+        pago.setTarjeta(mActivity.getTarjeta());
+        pago.setCvc(mActivity.getCVC());
+        pago.setMesVto(mActivity.getMes());
+        pago.setYearVto(mActivity.getYear());
+        pago.setMonto(mActivity.getMonto());
+        pago.setMetodoPago(mActivity.getMetodoPago());
+    }
+
+    /**
+     * Devuele el monto del pago en formato string
+     * @return
+     */
+    public String getMonto() {
+        return "$ " + mPedido.getPago().getMontoPedido();
     }
 }

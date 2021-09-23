@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.CompletadoActivity">
+    tools:context=".ui.activities.loquesea.CompletadoActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
@@ -49,5 +49,6 @@
         android:textColor="@color/white"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="20dp"
+        android:paddingVertical="20dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
