@@ -88,37 +88,54 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/btnMonto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="32dp"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="16dp">
+                app:cardElevation="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:orientation="vertical">
+                    android:layout_margin="16dp">
 
                     <TextView
+                        android:id="@+id/textView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Monto del servicio"
                         android:fontFamily="sans-serif-medium"
+                        android:text="Monto del servicio 💰💰"
                         android:textColor="@color/black"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
+                        android:contentDescription="@string/icono_ayuda"
+                        android:src="@drawable/ic_help"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <TextView
                         android:id="@+id/lblMonto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Monto del servicio"
-                        android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif"
+                        android:text="Monto del servicio"
                         android:textColor="@color/black"
-                        android:textSize="24sp"/>
-                </LinearLayout>
+                        android:textSize="24sp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="@id/textView6"
+                        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -140,7 +157,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Datos de la tarjeta"
+                        android:text="Datos de la tarjeta 💳"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/black"
                         android:textSize="18sp"/>
@@ -268,7 +285,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pago en efectivo"
+                    android:text="Pago en efectivo 💵"
                     android:fontFamily="sans-serif-medium"
                     android:textColor="@color/black"
                     android:textSize="18sp"/>
@@ -288,7 +305,7 @@
                         android:drawableStart="@drawable/ic_money"
                         android:hint="Con cuánto abonás *"
                         android:textSize="20sp"
-                        android:maxLength="6"
+                        android:maxLength="4"
                         android:inputType="number|numberDecimal"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>

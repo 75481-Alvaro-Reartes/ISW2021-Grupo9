@@ -20,12 +20,21 @@ public class MenuActivity extends BaseActivity {
 
     @Override
     protected void iniciarViews() {
-        findViewById(R.id.btnPedirLoQueSea).setOnClickListener(x ->
-                navegar(ProductosActivity.class)
-        );
+        findViewById(R.id.btnLoQueSea).setOnClickListener(x ->{
 
-        findViewById(R.id.btnPedirDeComercio).setOnClickListener(x ->
-                navegar(ProximamenteActivity.class)
-        );
+            setAnimacionNuevaActivity(R.anim.from_right, R.anim.to_left);
+            navegar(ProductosActivity.class);
+
+        });
+
+        findViewById(R.id.btnComercio).setOnClickListener(x ->{
+            setAnimacionNuevaActivity(R.anim.from_down, R.anim.to_up);
+            navegar(ProximamenteActivity.class);
+        });
+
+        findViewById(R.id.btnGrupo).setOnClickListener(x ->{
+            setAnimacionNuevaActivity(R.anim.from_up, R.anim.to_down);
+            navegar(DatosGrupoActivity.class);
+        });
     }
 }

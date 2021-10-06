@@ -141,6 +141,9 @@ public class PagosActivity extends BaseActivity implements View.OnClickListener 
         TextView lblMonto = findViewById(R.id.lblMonto);
         lblMonto.setText(mControl.getMonto());
 
+        findViewById(R.id.btnMonto).setOnClickListener(x ->
+                toast("El monto se calcula sumando $50 cada 500 metros de viaje."));
+
         mTxtTarjeta.addTextChangedListener(new ObservadorTexto() {
             boolean mostrandoVisa = false;
             boolean mostrandoError = false;

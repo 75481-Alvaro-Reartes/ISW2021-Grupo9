@@ -52,4 +52,12 @@ public class Constantes {
     public static final int HORA_HABIL_MIN = 8;
 
     public static final double MONTO_POR_500_METROS = 50;
+
+    /**
+     * Key a usar en shared preferences para comprobar si es el primer inicio
+     * del usuario en la app.
+     */
+    public static final String PRIMER_INICIO_APP = "primer_inicio_app";
+    
+    public static final String URL_REPOSITORIO = "https://github.com/75481-Alvaro-Reartes/ISW2021-Grupo9";
 }

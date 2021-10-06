@@ -155,7 +155,7 @@ public class ConfirmarActivity extends BaseActivity {
      */
     public void setImgProducto(@Nullable Imagen imagen) {
         if (imagen == null)
-            mImgProducto.setImageResource(R.drawable.ic_cart);
+            mImgProducto.setImageResource(R.drawable.ic_carrito);
         else
             mImgProducto.setImageBitmap(imagen.getBm());
     }
@@ -168,7 +168,7 @@ public class ConfirmarActivity extends BaseActivity {
         if (metodoPago == MetodoPago.Tarjeta)
             mImgPago.setImageResource(R.drawable.ic_visa);
         else
-            mImgPago.setImageResource(R.drawable.ic_money);
+            mImgPago.setImageResource(R.drawable.ic_dinero);
     }
 
     /**

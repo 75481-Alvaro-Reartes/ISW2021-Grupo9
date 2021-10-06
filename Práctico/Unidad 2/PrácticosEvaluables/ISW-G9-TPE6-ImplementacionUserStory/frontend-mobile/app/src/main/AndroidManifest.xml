@@ -17,8 +17,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DeliverEat">
         <activity
-            android:name=".ui.activities.decomercio.ProximamenteActivity"
+            android:name=".ui.activities.otros.DatosGrupoActivity"
             android:exported="true" />
+        <activity
+            android:name=".ui.activities.otros.PresentacionActivity"
+            android:exported="true"
+            android:theme="@style/Theme.DeliverEat.NoActionBar"/>
+        <activity
+            android:name=".ui.activities.otros.LauncherActivity"
+            android:exported="true"
+            android:theme="@style/Theme.DeliverEat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activities.decomercio.ProximamenteActivity"
+            android:exported="true"
+            android:parentActivityName=".ui.activities.otros.MenuActivity" />
         <activity
             android:name=".ui.activities.loquesea.EntregaActivity"
             android:exported="true"
@@ -61,13 +79,8 @@
             android:theme="@style/Theme.DeliverEat.NoActionBar" />
         <activity
             android:name=".ui.activities.otros.MenuActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true"
+            android:theme="@style/Theme.DeliverEat.NoActionBar" />
     </application>
 
 </manifest>
