@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
-            android:text="Pedir lo que Sea!"
+            android:text="@string/pedir_lo_que_sea"
             android:textColor="@color/white"
             android:textSize="19sp" />
     </com.google.android.material.appbar.MaterialToolbar>
@@ -36,7 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
-            app:srcCompat="@drawable/ic_progreso1" />
+            app:srcCompat="@drawable/ic_progreso1"
+            android:contentDescription="@string/progreso_del_pedido" />
 
     </androidx.cardview.widget.CardView>
 
@@ -68,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Producto"
+                        android:text="@string/producto"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -85,7 +86,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="start|top"
-                            android:hint="Describí el producto *"
+                            android:hint="@string/describe_el_producto"
                             android:lines="5"
                             android:maxLength="280"
                             android:maxLines="5"
@@ -120,7 +121,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
-                            android:text="Agregar una imágen"
+                            android:text="@string/agregar_una_imagen"
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
@@ -129,9 +130,9 @@
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="32dp"
-                            android:text="Buscar"
-                            android:textColor="?attr/colorPrimary" />
+                            android:layout_marginStart="8dp"
+                            android:text="@string/buscar"
+                            android:textColor="?attr/colorOnPrimary" />
 
                     </LinearLayout>
 
@@ -153,7 +154,8 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:contentDescription="@string/imagen_cargada" />
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/btnBorrarImg"
@@ -178,7 +180,8 @@
                                     android:layout_height="match_parent"
                                     android:src="@drawable/ic_delete_"
                                     app:tint="#616161"
-                                    tools:srcCompat="@drawable/ic_delete_" />
+                                    tools:srcCompat="@drawable/ic_delete_"
+                                    android:contentDescription="@string/borrar_imagen" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -197,7 +200,7 @@
                             android:id="@+id/lblPesoImg"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0 MB"
+                            android:text="@string/_0_mb"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
@@ -205,7 +208,7 @@
                             android:id="@+id/textView5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" / 5 MB"
+                            android:text="@string/_5_mb"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
                     </LinearLayout>

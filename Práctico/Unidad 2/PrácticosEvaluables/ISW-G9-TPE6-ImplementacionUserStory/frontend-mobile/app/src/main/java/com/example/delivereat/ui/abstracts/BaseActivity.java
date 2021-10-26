@@ -115,7 +115,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.animNuevaSalida = animNuevaSalida;
     }
 
-    protected final void setAnimacionFin(int animFinEntrada, int animFinSalida) {
+    protected final void setAnimacionVolver(int animFinEntrada, int animFinSalida) {
         this.animFinEntrada = animFinEntrada;
         this.animFinSalida = animFinSalida;
     }

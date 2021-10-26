@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.activities.loquesea.CompletadoActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="?attr/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:cardElevation="30dp"
         app:layout_constraintBaseline_toTopOf="parent"
-        app:cardElevation="30dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:gravity="center"
             android:text="Pedido de Lo Que Sea completado!"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="30sp"
-            android:gravity="center"/>
+            android:textSize="30sp" />
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginBottom="30dp"
-                android:layout_gravity="center"
-                app:lottie_rawRes="@raw/anim_check"
-                app:lottie_autoPlay="true"/>
-
-
-        </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="64dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnVolverInicio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/anim_check" />
 
     <Button
         android:id="@+id/btnVolverInicio"
@@ -51,4 +55,5 @@
         android:layout_marginBottom="20dp"
         android:paddingVertical="20dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

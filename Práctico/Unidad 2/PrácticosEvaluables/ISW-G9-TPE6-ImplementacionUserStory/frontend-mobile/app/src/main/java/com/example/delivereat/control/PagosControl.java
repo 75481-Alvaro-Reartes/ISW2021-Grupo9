@@ -56,7 +56,7 @@ public class PagosControl implements IControl {
 
     /**
      * Devuele el monto del pago en formato string
-     * @return
+     * @return Monto del pedido
      */
     public String getMonto() {
         return "$ " + mPedido.getPago().getMontoPedido();

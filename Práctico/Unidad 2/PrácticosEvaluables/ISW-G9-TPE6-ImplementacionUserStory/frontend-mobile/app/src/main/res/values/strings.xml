@@ -7,6 +7,44 @@
         <item>Río Primero</item>
         <item>Villa Carlos Paz</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="disponible_proximamente">Esta opción estará disponible próximamente!! 🧐😴⌛</string>
+    <string name="no_necesariamente">(No necesariamente, le tocaba a los grupos pares 😅😅😅)</string>
+    <string name="pedir_lo_que_sea">Pedir lo que Sea!</string>
+    <string name="producto">Producto 📦🚀</string>
+    <string name="agregar_una_imagen">Agregar una imágen 📷</string>
+    <string name="buscar">Buscar</string>
+    <string name="imagen_cargada">imagen cargada</string>
+    <string name="borrar_imagen">borrar imagen</string>
+    <string name="_0_mb">0 MB</string>
+    <string name="_5_mb">/ 5 MB</string>
+    <string name="describe_el_producto">Describí el producto *</string>
+    <string name="progreso_del_pedido">progreso del pedido</string>
+    <string name="app_bar">app bar</string>
+    <string name="hacer_un_pedido">Hacer un pedido</string>
+    <string name="icono_ayuda">icono ayuda</string>
+    <string name="logo_utn">logo utn</string>
+    <string name="utn">Universidad Tecnológica Nacional</string>
+    <string name="frc">Facultad Regional Córdoba</string>
+    <string name="isi">Ingeniería en Sistemas de Información</string>
+    <string name="isw">Cátedra: Ingeniería de Software</string>
+    <string name="comision">Comisión: 4K1</string>
+    <string name="grupo_9">Grupo 9:</string>
+    <string name="battig_chavez_joaquin_antonio_76056">Battig Chavez Joaquin Antonio, 76056</string>
+    <string name="cosci_franco_78644">Cosci Franco,78644</string>
+    <string name="folli_nicol_s_78531">Folli Nicolás, 78531</string>
+    <string name="pages_juan_ignacio_78314">Pages Juan Ignacio, 78314</string>
+    <string name="reartes_alvaro_75481">Reartes Alvaro, 75481</string>
+    <string name="slavik_lucas_78341">Slavik Lucas, 78341</string>
+    <string name="_2021">2021</string>
+    <string name="repositorio_en_github">Repositorio en GitHub</string>
+    <string name="fondo_presentacion">fondo presentacion</string>
+    <string name="logo_app">logo app</string>
+    <string name="saludo">Hola, grupo 9!</string>
+    <string name="comercio_adherido">Comercio Adherido</string>
+    <string name="adorno">adorno</string>
+    <string name="caja">caja</string>
+    <string name="lo_que_sea">Lo que Sea!</string>
+    <string name="extras">Extras</string>
+    <string name="portapapeles">portapapeles</string>
+    <string name="datos_del_grupo">Datos del Grupo</string>
 </resources>

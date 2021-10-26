@@ -79,22 +79,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Dónde"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" buscar "
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="el producto"
+                            android:text="Dirección de Origen 🏬"
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
@@ -103,9 +88,9 @@
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="end|center_vertical"
-                            android:text="Maps"
-                            android:textColor="?attr/colorPrimary"
+                            android:text="Maps 🌎"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -205,22 +190,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Dónde "
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="entregar"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" el producto"
+                            android:text="Dirección de Entrega 🏡"
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
@@ -229,9 +199,9 @@
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="end|center_vertical"
-                            android:text="Maps"
-                            android:textColor="?attr/colorPrimary"
+                            android:text="Maps 🌎"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="16sp" />
                     </LinearLayout>
 

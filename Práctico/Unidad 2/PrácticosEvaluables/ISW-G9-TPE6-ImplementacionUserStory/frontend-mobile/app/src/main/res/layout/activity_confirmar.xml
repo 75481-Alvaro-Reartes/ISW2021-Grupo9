@@ -60,7 +60,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:fontFamily="sans-serif-medium"
-                            android:text="Pedido"
+                            android:text="Pedido 📦"
                             android:gravity="center_vertical"
                             android:layout_marginStart="20dp"
                             android:textColor="@color/black"
@@ -96,7 +96,7 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_marginStart="20dp"
-                            android:src="@drawable/ic_cart" />
+                            android:src="@drawable/ic_carrito" />
 
                         <TextView
                             android:id="@+id/lblConfirmarProducto"
@@ -126,7 +126,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
-                            android:text="Comercio"
+                            android:text="Comercio 🏬"
                             android:textColor="@color/black"
                             android:layout_marginStart="20dp"
                             android:textSize="18sp" />
@@ -146,7 +146,7 @@
                             android:layout_marginTop="24dp"
                             android:fontFamily="sans-serif-medium"
                             android:layout_marginStart="20dp"
-                            android:text="Entrega"
+                            android:text="Entrega 🏡"
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
@@ -179,7 +179,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
-                            android:text="Llega"
+                            android:text="Llega 📅 🕔"
                             android:layout_marginStart="20dp"
                             android:textColor="@color/black"
                             android:textSize="18sp" />
@@ -213,7 +213,7 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_marginStart="20dp"
-                            android:src="@drawable/ic_money"/>
+                            android:src="@drawable/ic_dinero"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -225,7 +225,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
-                            android:text="Pago"
+                            android:text="Pago 💸"
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
